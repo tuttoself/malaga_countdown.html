@@ -1,249 +1,207 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Malaga Countdown</title>
 
 <style>
-:root{
-    --sun:#ffd166;
-    --coral:#ff6b6b;
-    --sea:#118ab2;
-    --deep:#073b4c;
-    --mint:#06d6a0;
-    --cream:#fff7e6;
-    --glass:rgba(255,255,255,0.15);
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
-    min-height:100vh;
-    font-family:Arial, Helvetica, sans-serif;
-    color:white;
-    overflow:hidden;
-    background:
-    radial-gradient(circle at 20% 20%, rgba(255,209,102,0.35), transparent 25%),
-    radial-gradient(circle at 80% 30%, rgba(255,107,107,0.25), transparent 25%),
-    linear-gradient(135deg,#073b4c,#118ab2,#06d6a0);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
+  min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  color:white;
+  background:linear-gradient(135deg,#073b4c,#118ab2,#06d6a0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:25px;
 }
 
-.container{
-    width:100%;
-    max-width:900px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(14px);
-    border:1px solid rgba(255,255,255,0.2);
-    border-radius:30px;
-    padding:40px 25px;
-    text-align:center;
-    box-shadow:0 10px 40px rgba(0,0,0,0.25);
+.card{
+  width:100%;
+  max-width:850px;
+  padding:35px 25px;
+  border-radius:32px;
+  text-align:center;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
 .badge{
-    display:inline-block;
-    padding:12px 20px;
-    border-radius:999px;
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.2);
-    margin-bottom:30px;
-    font-size:18px;
+  display:inline-block;
+  padding:14px 22px;
+  border-radius:999px;
+  background:rgba(255,255,255,.14);
+  margin-bottom:28px;
+  font-size:20px;
 }
 
 h1{
-    font-size:58px;
-    line-height:1.1;
-    margin-bottom:20px;
+  font-size:54px;
+  line-height:1.05;
+  margin-bottom:22px;
 }
 
-.subtitle{
-    font-size:24px;
-    opacity:0.95;
-    margin-bottom:40px;
-    line-height:1.5;
+p{
+  font-size:24px;
+  line-height:1.45;
+  margin-bottom:35px;
 }
 
 .countdown{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
-    margin-bottom:40px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  margin-bottom:35px;
 }
 
 .box{
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.2);
-    border-radius:25px;
-    padding:30px 15px;
+  padding:26px 10px;
+  border-radius:24px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.25);
 }
 
-.number{
-    font-size:58px;
-    font-weight:bold;
-    margin-bottom:10px;
+.num{
+  font-size:54px;
+  font-weight:800;
 }
 
 .label{
-    font-size:18px;
-    letter-spacing:2px;
-    opacity:0.85;
+  margin-top:8px;
+  font-size:16px;
+  letter-spacing:3px;
+  font-weight:bold;
 }
 
 .friends{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
 }
 
 .friend{
-    background:rgba(0,0,0,0.15);
-    border-radius:22px;
-    padding:20px;
+  padding:22px 12px;
+  border-radius:22px;
+  background:rgba(0,0,0,.18);
 }
 
-.friend h3{
-    font-size:28px;
-    margin-top:10px;
+.friend .emoji{
+  font-size:34px;
+  margin-bottom:10px;
 }
 
-.friend p{
-    opacity:0.8;
-    margin-top:8px;
+.friend h2{
+  font-size:30px;
+}
+
+.friend span{
+  display:block;
+  margin-top:8px;
+  font-size:17px;
+  opacity:.85;
 }
 
 .footer{
-    margin-top:35px;
-    font-size:18px;
-    opacity:0.9;
+  margin-top:28px;
+  font-size:18px;
 }
 
-@media(max-width:700px){
-    h1{
-        font-size:42px;
-    }
-
-    .subtitle{
-        font-size:20px;
-    }
-
-    .number{
-        font-size:42px;
-    }
+@media(max-width:600px){
+  h1{font-size:42px}
+  p{font-size:21px}
+  .num{font-size:44px}
 }
 </style>
 </head>
 
 <body>
+<div class="card">
 
-<div class="container">
+  <div class="badge">🌴 Oggi è il 27 maggio • Malaga il 18 giugno</div>
 
-    <div class="badge">
-        🌴 Malaga Trip • 18 Giugno
+  <h1>Malaga, stiamo arrivando 🍻</h1>
+
+  <p>
+    Christian, Davide, Peppe e Fabio.<br>
+    4 amici, una valigia forse pronta e zero voglia di restare a casa.
+  </p>
+
+  <div class="countdown" id="countdown">
+    <div class="box">
+      <div class="num" id="days">0</div>
+      <div class="label">GIORNI</div>
     </div>
-
-    <h1>Malaga, stiamo arrivando 🍻</h1>
-
-    <div class="subtitle">
-        Christian, Davide, Peppe e Fabio.<br>
-        4 amici, zero voglia di lavorare e una sola missione:
-        tapas, mare e devasto controllato 😎
+    <div class="box">
+      <div class="num" id="hours">0</div>
+      <div class="label">ORE</div>
     </div>
-
-    <div class="countdown">
-
-        <div class="box">
-            <div class="number" id="days">0</div>
-            <div class="label">GIORNI</div>
-        </div>
-
-        <div class="box">
-            <div class="number" id="hours">0</div>
-            <div class="label">ORE</div>
-        </div>
-
-        <div class="box">
-            <div class="number" id="minutes">0</div>
-            <div class="label">MINUTI</div>
-        </div>
-
-        <div class="box">
-            <div class="number" id="seconds">0</div>
-            <div class="label">SECONDI</div>
-        </div>
-
+    <div class="box">
+      <div class="num" id="minutes">0</div>
+      <div class="label">MINUTI</div>
     </div>
-
-    <div class="friends">
-
-        <div class="friend">
-            😎
-            <h3>Christian</h3>
-            <p>CEO delle ferie anticipate</p>
-        </div>
-
-        <div class="friend">
-            🕺
-            <h3>Davide</h3>
-            <p>Animatore non richiesto</p>
-        </div>
-
-        <div class="friend">
-            🍺
-            <h3>Peppe</h3>
-            <p>Responsabile aperitivi</p>
-        </div>
-
-        <div class="friend">
-            🌮
-            <h3>Fabio</h3>
-            <p>Tester ufficiale tapas</p>
-        </div>
-
+    <div class="box">
+      <div class="num" id="seconds">0</div>
+      <div class="label">SECONDI</div>
     </div>
+  </div>
 
-    <div class="footer">
-        Countdown automatico sincronizzato ⏳
+  <div class="friends">
+    <div class="friend">
+      <div class="emoji">😎</div>
+      <h2>Christian</h2>
+      <span>Capitano ufficiale della partenza</span>
     </div>
+    <div class="friend">
+      <div class="emoji">🕺</div>
+      <h2>Davide</h2>
+      <span>Responsabile casino elegante</span>
+    </div>
+    <div class="friend">
+      <div class="emoji">🍺</div>
+      <h2>Peppe</h2>
+      <span>Direttore aperitivi</span>
+    </div>
+    <div class="friend">
+      <div class="emoji">🌮</div>
+      <h2>Fabio</h2>
+      <span>Assaggiatore tapas professionista</span>
+    </div>
+  </div>
+
+  <div class="footer">Countdown live e automatico ⏳</div>
 
 </div>
 
 <script>
-
-const targetDate = new Date("2025-06-18T00:00:00").getTime();
+const targetDate = new Date("2026-06-18T00:00:00").getTime();
 
 function updateCountdown(){
+  const now = new Date().getTime();
+  const diff = targetDate - now;
 
-    const now = new Date().getTime();
-    const distance = targetDate - now;
+  if(diff <= 0){
+    document.getElementById("countdown").innerHTML =
+      "<h2>Siete a Malaga 🍻🌴</h2>";
+    return;
+  }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById("days").innerHTML = days;
-    document.getElementById("hours").innerHTML = hours;
-    document.getElementById("minutes").innerHTML = minutes;
-    document.getElementById("seconds").innerHTML = seconds;
-
-    if(distance < 0){
-        document.querySelector(".countdown").innerHTML =
-        "<h2>Siete a Malaga 🍻🌴</h2>";
-    }
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = hours;
+  document.getElementById("minutes").textContent = minutes;
+  document.getElementById("seconds").textContent = seconds;
 }
 
 updateCountdown();
-setInterval(updateCountdown,1000);
-
+setInterval(updateCountdown, 1000);
 </script>
 
 </body>
