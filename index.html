@@ -13,15 +13,12 @@ body{
   font-family:Arial,Helvetica,sans-serif;
   color:white;
   background:linear-gradient(135deg,#073b4c,#118ab2,#06d6a0);
-  display:flex;
-  justify-content:center;
-  align-items:center;
   padding:25px;
 }
 
 .card{
-  width:100%;
   max-width:850px;
+  margin:auto;
   padding:35px 25px;
   border-radius:32px;
   text-align:center;
@@ -45,7 +42,7 @@ h1{
   margin-bottom:22px;
 }
 
-p{
+.intro{
   font-size:24px;
   line-height:1.45;
   margin-bottom:35px;
@@ -81,6 +78,7 @@ p{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:16px;
+  margin-bottom:35px;
 }
 
 .friend{
@@ -105,15 +103,35 @@ p{
   opacity:.85;
 }
 
+.mission{
+  margin-top:20px;
+  padding:28px 18px;
+  border-radius:28px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.mission h2{
+  font-size:34px;
+  margin-bottom:18px;
+}
+
+.mission p{
+  font-size:22px;
+  line-height:1.7;
+}
+
 .footer{
   margin-top:28px;
   font-size:18px;
+  opacity:.95;
 }
 
 @media(max-width:600px){
   h1{font-size:42px}
-  p{font-size:21px}
+  .intro{font-size:21px}
   .num{font-size:44px}
+  .mission p{font-size:20px}
 }
 </style>
 </head>
@@ -125,10 +143,10 @@ p{
 
   <h1>Malaga, stiamo arrivando 🍻</h1>
 
-  <p>
+  <div class="intro">
     Christian, Davide, Peppe e Fabio.<br>
     4 amici, una valigia forse pronta e zero voglia di restare a casa.
-  </p>
+  </div>
 
   <div class="countdown" id="countdown">
     <div class="box">
@@ -155,16 +173,19 @@ p{
       <h2>Christian</h2>
       <span>Capitano ufficiale della partenza</span>
     </div>
+
     <div class="friend">
       <div class="emoji">🕺</div>
       <h2>Davide</h2>
       <span>Responsabile casino elegante</span>
     </div>
+
     <div class="friend">
       <div class="emoji">🍺</div>
       <h2>Peppe</h2>
       <span>Direttore aperitivi</span>
     </div>
+
     <div class="friend">
       <div class="emoji">🌮</div>
       <h2>Fabio</h2>
@@ -172,7 +193,21 @@ p{
     </div>
   </div>
 
-  <div class="footer">Countdown live e automatico ⏳</div>
+  <div class="mission">
+    <h2>🌴 Malaga Mission 🌴</h2>
+    <p>
+      🍺 Aperitivi infiniti<br>
+      💃 Ballare fino alle 5<br>
+      🌮 Sopravvivere alle tapas piccanti<br>
+      😎 Fare finta di essere VIP<br>
+      ❤️ Caccia internazionale di ragazze vogliose 😂<br>
+      🕺 Distruggere le piste da ballo spagnole
+    </p>
+  </div>
+
+  <div class="footer">
+    Countdown ufficiale della devastazione controllata ⏳🍻
+  </div>
 
 </div>
 
