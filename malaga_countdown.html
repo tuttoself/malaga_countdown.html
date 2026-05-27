@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malaga Countdown - Christian & Friends</title>
+  <style>
+    :root {
+      --sun: #ffd166;
+      --coral: #ff6b6b;
+      --sea: #118ab2;
+      --deep: #073b4c;
+      --mint: #06d6a0;
+      --cream: #fff7e6;
+      --glass: rgba(255, 255, 255, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 209, 102, .9), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(255, 107, 107, .9), transparent 25%),
+        linear-gradient(135deg, #073b4c 0%, #118ab2 45%, #06d6a0 100%);
+    }
+
+    .wave {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 190px;
+      background: rgba(255,255,255,.22);
+      clip-path: ellipse(75% 45% at 50% 100%);
+      z-index: 0;
+    }
+
+    .sun {
+      position: fixed;
+      width: 150px;
+      height: 150px;
+      right: 8%;
+      top: 7%;
+      border-radius: 50%;
+      background: var(--sun);
+      box-shadow: 0 0 70px 20px rgba(255, 209, 102, .55);
+      animation: float 5s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(18px); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 34px 18px;
+    }
+
+    .card {
+      width: min(1120px, 100%);
+      padding: 34px;
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.1));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 28px 80px rgba(0,0,0,.26);
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.32);
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    h1 {
+      margin: 24px 0 10px;
+      font-size: clamp(42px, 8vw, 92px);
+      line-height: .95;
+      text-shadow: 0 10px 28px rgba(0,0,0,.22);
+    }
+
+    .subtitle {
+      margin: 0 auto 28px;
+      max-width: 760px;
+      font-size: clamp(18px, 2.5vw, 26px);
+      color: rgba(255,255,255,.92);
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .timebox {
+      padding: 24px 12px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.32);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 35px rgba(0,0,0,.16);
+    }
+
+    .number {
+      display: block;
+      font-size: clamp(34px, 6vw, 70px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 1.4px;
+      color: rgba(255,255,255,.86);
+    }
+
+    .crew {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 30px 0 20px;
+    }
+
+    .friend {
+      padding: 18px 12px;
+      border-radius: 22px;
+      background: rgba(7, 59, 76, .24);
+      border: 1px solid rgba(255,255,255,.25);
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .emoji {
+      display: block;
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .fun {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .fun-card {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.24);
+      min-height: 110px;
+    }
+
+    .fun-card strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .cta {
+      margin-top: 28px;
+      display: inline-block;
+      padding: 16px 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--coral), var(--sun));
+      color: var(--deep);
+      font-weight: 1000;
+      text-decoration: none;
+      box-shadow: 0 18px 38px rgba(0,0,0,.22);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.045); }
+    }
+
+    .note {
+      margin-top: 18px;
+      color: rgba(255,255,255,.78);
+      font-size: 14px;
+    }
+
+    .confetti {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .confetti span {
+      position: absolute;
+      top: -20px;
+      width: 10px;
+      height: 16px;
+      border-radius: 4px;
+      background: white;
+      opacity: .8;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(540deg); }
+    }
+
+    @media (max-width: 800px) {
+      .card { padding: 24px 16px; border-radius: 26px; }
+      .countdown { grid-template-columns: repeat(2, 1fr); }
+      .crew { grid-template-columns: repeat(2, 1fr); }
+      .fun { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sun"></div>
+  <div class="wave"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <main class="page">
+    <section class="card">
+      <div class="badge">📅 Oggi è il 27 maggio · Destinazione Malaga</div>
+      <h1>Malaga, stiamo arrivando! 🌴</h1>
+      <p class="subtitle">
+        Christian, Davide, Peppe e Fabio: quattro leggende, una valigia forse pronta,
+        zero voglia di restare a casa. Il 18 giugno si parte!
+      </p>
+
+      <div class="countdown" aria-label="Conto alla rovescia per Malaga">
+        <div class="timebox"><span class="number" id="days">--</span><span class="label">Giorni</span></div>
+        <div class="timebox"><span class="number" id="hours">--</span><span class="label">Ore</span></div>
+        <div class="timebox"><span class="number" id="minutes">--</span><span class="label">Minuti</span></div>
+        <div class="timebox"><span class="number" id="seconds">--</span><span class="label">Secondi</span></div>
+      </div>
+
+      <div class="crew">
+        <div class="friend"><span class="emoji">😎</span>Christian<br><small>CEO del viaggio</small></div>
+        <div class="friend"><span class="emoji">🕺</span>Davide<br><small>Responsabile mood</small></div>
+        <div class="friend"><span class="emoji">🍻</span>Peppe<br><small>Ministero aperitivi</small></div>
+        <div class="friend"><span class="emoji">📸</span>Fabio<br><small>Foto brutte ma epiche</small></div>
+      </div>
+
+      <div class="fun">
+        <div class="fun-card"><strong>Missione 1 🧳</strong>Fare la valigia senza dimenticare costume, occhiali e dignità.</div>
+        <div class="fun-card"><strong>Missione 2 🏖️</strong>Trovare la spiaggia perfetta e dichiararla quartier generale.</div>
+        <div class="fun-card"><strong>Missione 3 🌮</strong>Tapas, sole e risate fino a quando il telefono chiede pietà.</div>
+      </div>
+
+      <a class="cta" href="#">Countdown attivo: Malaga mode ON ✈️</a>
+      <div class="note" id="autoNote">Il timer si aggiorna da solo e ricalcola tutto quando riapri la pagina.</div>
+    </section>
+  </main>
+
+  <script>
+    // Data di partenza: 18 giugno 2026 alle 00:00, ora locale del browser.
+    // Cambia l'orario qui sotto se volete mettere l'ora esatta del volo.
+    const departureDate = new Date(2026, 5, 18, 0, 0, 0);
+
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const noteEl = document.getElementById('autoNote');
+
+    function pad(num) {
+      return String(num).padStart(2, '0');
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = departureDate - now;
+
+      if (diff <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        noteEl.textContent = 'È ora: tutti a Malaga! 🌴✈️';
+        document.querySelector('h1').textContent = 'Si parteeee! Malaga ci aspetta! 🎉';
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (60 * 60 * 24));
+      const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+      const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+      const seconds = totalSeconds % 60;
+
+      daysEl.textContent = pad(days);
+      hoursEl.textContent = pad(hours);
+      minutesEl.textContent = pad(minutes);
+      secondsEl.textContent = pad(seconds);
+    }
+
+    function createConfetti() {
+      const colors = ['#ffd166', '#ff6b6b', '#06d6a0', '#118ab2', '#ffffff'];
+      const container = document.getElementById('confetti');
+
+      for (let i = 0; i < 36; i++) {
+        const piece = document.createElement('span');
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (5 + Math.random() * 6) + 's';
+        piece.style.animationDelay = Math.random() * 5 + 's';
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(piece);
+      }
+    }
+
+    createConfetti();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
