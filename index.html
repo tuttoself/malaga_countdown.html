@@ -1,1 +1,250 @@
-agehe
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Malaga Countdown</title>
+
+<style>
+:root{
+    --sun:#ffd166;
+    --coral:#ff6b6b;
+    --sea:#118ab2;
+    --deep:#073b4c;
+    --mint:#06d6a0;
+    --cream:#fff7e6;
+    --glass:rgba(255,255,255,0.15);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial, Helvetica, sans-serif;
+    color:white;
+    overflow:hidden;
+    background:
+    radial-gradient(circle at 20% 20%, rgba(255,209,102,0.35), transparent 25%),
+    radial-gradient(circle at 80% 30%, rgba(255,107,107,0.25), transparent 25%),
+    linear-gradient(135deg,#073b4c,#118ab2,#06d6a0);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:30px;
+    padding:40px 25px;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.25);
+}
+
+.badge{
+    display:inline-block;
+    padding:12px 20px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    margin-bottom:30px;
+    font-size:18px;
+}
+
+h1{
+    font-size:58px;
+    line-height:1.1;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    font-size:24px;
+    opacity:0.95;
+    margin-bottom:40px;
+    line-height:1.5;
+}
+
+.countdown{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    margin-bottom:40px;
+}
+
+.box{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:25px;
+    padding:30px 15px;
+}
+
+.number{
+    font-size:58px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.label{
+    font-size:18px;
+    letter-spacing:2px;
+    opacity:0.85;
+}
+
+.friends{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.friend{
+    background:rgba(0,0,0,0.15);
+    border-radius:22px;
+    padding:20px;
+}
+
+.friend h3{
+    font-size:28px;
+    margin-top:10px;
+}
+
+.friend p{
+    opacity:0.8;
+    margin-top:8px;
+}
+
+.footer{
+    margin-top:35px;
+    font-size:18px;
+    opacity:0.9;
+}
+
+@media(max-width:700px){
+    h1{
+        font-size:42px;
+    }
+
+    .subtitle{
+        font-size:20px;
+    }
+
+    .number{
+        font-size:42px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="badge">
+        🌴 Malaga Trip • 18 Giugno
+    </div>
+
+    <h1>Malaga, stiamo arrivando 🍻</h1>
+
+    <div class="subtitle">
+        Christian, Davide, Peppe e Fabio.<br>
+        4 amici, zero voglia di lavorare e una sola missione:
+        tapas, mare e devasto controllato 😎
+    </div>
+
+    <div class="countdown">
+
+        <div class="box">
+            <div class="number" id="days">0</div>
+            <div class="label">GIORNI</div>
+        </div>
+
+        <div class="box">
+            <div class="number" id="hours">0</div>
+            <div class="label">ORE</div>
+        </div>
+
+        <div class="box">
+            <div class="number" id="minutes">0</div>
+            <div class="label">MINUTI</div>
+        </div>
+
+        <div class="box">
+            <div class="number" id="seconds">0</div>
+            <div class="label">SECONDI</div>
+        </div>
+
+    </div>
+
+    <div class="friends">
+
+        <div class="friend">
+            😎
+            <h3>Christian</h3>
+            <p>CEO delle ferie anticipate</p>
+        </div>
+
+        <div class="friend">
+            🕺
+            <h3>Davide</h3>
+            <p>Animatore non richiesto</p>
+        </div>
+
+        <div class="friend">
+            🍺
+            <h3>Peppe</h3>
+            <p>Responsabile aperitivi</p>
+        </div>
+
+        <div class="friend">
+            🌮
+            <h3>Fabio</h3>
+            <p>Tester ufficiale tapas</p>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Countdown automatico sincronizzato ⏳
+    </div>
+
+</div>
+
+<script>
+
+const targetDate = new Date("2025-06-18T00:00:00").getTime();
+
+function updateCountdown(){
+
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerHTML = days;
+    document.getElementById("hours").innerHTML = hours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+
+    if(distance < 0){
+        document.querySelector(".countdown").innerHTML =
+        "<h2>Siete a Malaga 🍻🌴</h2>";
+    }
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+</script>
+
+</body>
+</html>
