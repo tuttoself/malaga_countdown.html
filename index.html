@@ -6,11 +6,7 @@
 <title>Malaga Countdown</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
   min-height:100vh;
@@ -40,65 +36,46 @@ body{
   font-size:20px;
 }
 
-h1{
-  font-size:56px;
-  line-height:1.1;
-  margin-bottom:22px;
-}
+h1{font-size:54px;margin-bottom:20px}
 
 .intro{
-  font-size:24px;
+  font-size:23px;
   line-height:1.5;
-  margin-bottom:35px;
+  margin-bottom:30px;
 }
 
-.countdown{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-  margin-bottom:35px;
-}
-
-.box{
-  padding:28px 10px;
-  border-radius:24px;
-  background:rgba(255,255,255,.16);
-  border:1px solid rgba(255,255,255,.25);
-}
-
-.num{
-  font-size:58px;
-  font-weight:800;
-}
-
-.label{
-  margin-top:8px;
-  font-size:16px;
-  letter-spacing:3px;
-  font-weight:bold;
-}
-
-.friends{
+.countdown,.friends,.scoreboard{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:16px;
   margin-bottom:35px;
 }
 
-.friend{
-  padding:22px 12px;
-  border-radius:22px;
+.box,.friend,.score,.game{
+  padding:24px 12px;
+  border-radius:24px;
   background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.num{
+  font-size:54px;
+  font-weight:800;
+}
+
+.label{
+  margin-top:8px;
+  font-size:15px;
+  letter-spacing:3px;
+  font-weight:bold;
 }
 
 .friend .emoji{
   font-size:36px;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 
-.friend h2{
-  font-size:30px;
-}
+.friend h2{font-size:28px}
 
 .friend span{
   display:block;
@@ -107,48 +84,65 @@ h1{
   opacity:.85;
 }
 
+.game{
+  margin-top:25px;
+  margin-bottom:30px;
+}
+
+.game h2{
+  font-size:34px;
+  margin-bottom:15px;
+}
+
+.challenge{
+  font-size:24px;
+  line-height:1.5;
+  margin:20px 0;
+}
+
+select,button{
+  width:100%;
+  max-width:420px;
+  margin:8px auto;
+  padding:15px;
+  border-radius:16px;
+  border:none;
+  font-size:18px;
+  font-weight:bold;
+}
+
+button{
+  background:#ffd166;
+  color:#073b4c;
+  cursor:pointer;
+}
+
+.score strong{
+  font-size:28px;
+  display:block;
+}
+
 .mission{
   margin-top:20px;
   padding:28px 18px;
   border-radius:28px;
   background:rgba(0,0,0,.18);
-  border:1px solid rgba(255,255,255,.2);
-}
-
-.mission h2{
-  font-size:34px;
-  margin-bottom:18px;
 }
 
 .mission p{
-  font-size:22px;
+  font-size:21px;
   line-height:1.8;
 }
 
 .footer{
-  margin-top:28px;
+  margin-top:25px;
   font-size:18px;
-  opacity:.95;
 }
 
 @media(max-width:650px){
-
-  h1{
-    font-size:42px;
-  }
-
-  .intro{
-    font-size:20px;
-  }
-
-  .num{
-    font-size:44px;
-  }
-
-  .mission p{
-    font-size:19px;
-  }
-
+  h1{font-size:40px}
+  .intro,.challenge{font-size:20px}
+  .num{font-size:42px}
 }
 </style>
 </head>
@@ -164,11 +158,10 @@ h1{
   <div class="intro">
     Christian, Davide, Peppe e Fabio.<br>
     4 alpha in missione, zero sonno e una sola regola:
-    tornare con storie leggendarie 🌴
+    arrivare al 17 giugno con più punti possibile 🌴
   </div>
 
   <div class="countdown" id="countdown">
-
     <div class="box">
       <div class="num" id="days">0</div>
       <div class="label">GIORNI</div>
@@ -188,11 +181,9 @@ h1{
       <div class="num" id="seconds">0</div>
       <div class="label">SECONDI</div>
     </div>
-
   </div>
 
   <div class="friends">
-
     <div class="friend">
       <div class="emoji">🦍</div>
       <h2>Fabio</h2>
@@ -216,23 +207,49 @@ h1{
       <h2>Peppe</h2>
       <span>Minaccia ufficiale per gli aperitivi spagnoli</span>
     </div>
+  </div>
+
+  <div class="game">
+
+    <h2>🎯 Sfida Alpha del Giorno</h2>
+
+    <select id="player">
+      <option value="">Scegli il tuo nome</option>
+      <option>Christian</option>
+      <option>Fabio</option>
+      <option>Davide</option>
+      <option>Peppe</option>
+    </select>
+
+    <div class="challenge" id="challengeText">
+      Scegli il tuo nome per ricevere la sfida personale.
+    </div>
+
+    <button onclick="completeChallenge()">Sfida completata: +1 punto 🦁</button>
+    <button onclick="resetScores()">Reset punti</button>
+
+    <h2 style="margin-top:25px;">🏆 Classifica Locale</h2>
+
+    <div class="scoreboard" id="scoreboard"></div>
+
+    <div class="footer">
+      Le sfide valgono fino al 17 giugno alle 23:59:59.<br>
+      Chi ha meno punti paga il primo giro a Malaga 🍻
+    </div>
 
   </div>
 
   <div class="mission">
-
     <h2>🌴 Malaga Mission Alpha 🌴</h2>
-
     <p>
       🍺 Aperitivi senza pietà<br>
       💃 Ballare fino alle 5<br>
       🌮 Tapas, mare e caos elegante<br>
       😎 Entrare ovunque come VIP non invitati<br>
-      ❤️ Caccia internazionale di ragazze vogliose 😂<br>
+      😂 Urlare “Ejaculacion poderosaaaa” nel momento più sbagliato<br>
       🕺 Distruggere le piste da ballo spagnole<br>
       🦁 Tornare con racconti da leggenda
     </p>
-
   </div>
 
   <div class="footer">
@@ -242,52 +259,187 @@ h1{
 </div>
 
 <script>
-
-const mesi = [
-  "gennaio","febbraio","marzo","aprile",
-  "maggio","giugno","luglio","agosto",
-  "settembre","ottobre","novembre","dicembre"
+const mesi=[
+  "gennaio","febbraio","marzo","aprile","maggio","giugno",
+  "luglio","agosto","settembre","ottobre","novembre","dicembre"
 ];
 
-const oggi = new Date();
+function aggiornaData(){
+  const oggi=new Date();
 
-const giorno = oggi.getDate();
-const mese = mesi[oggi.getMonth()];
+  document.getElementById("todayDate").innerHTML =
+    `🌴 Oggi è il ${oggi.getDate()} ${mesi[oggi.getMonth()]} • Sfide fino al 17 giugno`;
+}
 
-document.getElementById("todayDate").innerHTML =
-`🌴 Oggi è il ${giorno} ${mese} • Malaga il 18 giugno`;
-
-const targetDate = new Date("2026-06-18T00:00:00").getTime();
+const targetDate=new Date("2026-06-17T23:59:59").getTime();
 
 function updateCountdown(){
+  const now=new Date().getTime();
+  const diff=targetDate-now;
 
-  const now = new Date().getTime();
-  const diff = targetDate - now;
-
-  if(diff <= 0){
-
+  if(diff<=0){
     document.getElementById("countdown").innerHTML =
-    "<h2>Siete a Malaga 🍻🌴</h2>";
-
+      "<h2>Tempo scaduto ⏰<br>Chi ha meno punti paga da bere a Malaga 🍻</h2>";
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
+  document.getElementById("days").textContent =
+    Math.floor(diff/(1000*60*60*24));
 
-  document.getElementById("days").textContent = days;
-  document.getElementById("hours").textContent = hours;
-  document.getElementById("minutes").textContent = minutes;
-  document.getElementById("seconds").textContent = seconds;
+  document.getElementById("hours").textContent =
+    Math.floor((diff/(1000*60*60))%24);
 
+  document.getElementById("minutes").textContent =
+    Math.floor((diff/(1000*60))%60);
+
+  document.getElementById("seconds").textContent =
+    Math.floor((diff/1000)%60);
 }
 
+const challenges=[
+  "Fai una camminata da alpha per 10 secondi in pubblico.",
+  "Manda un audio al gruppo dicendo: Ejaculacion poderosaaaa 😂",
+  "Fai ballare qualcuno entro mezzanotte.",
+  "Fai una foto con occhiali da sole anche se non c’è sole.",
+  "Ordina qualcosa pronunciandolo con accento spagnolo scandaloso.",
+  "Fai ridere uno sconosciuto senza spiegare nulla.",
+  "Trova una canzone spagnola e cantala malissimo.",
+  "Fai un brindisi epico come se fossi il re di Malaga.",
+  "Convincete Fabio che il piano era suo anche se non è vero.",
+  "Usa la parola alpha almeno 5 volte nella stessa conversazione.",
+  "Fai una posa da copertina davanti a un posto imbarazzante.",
+  "Fai partire un applauso casuale.",
+  "Dì hola guapa con eleganza, senza sembrare un turista perso.",
+  "Trova il miglior spot per il primo drink ufficiale.",
+  "Fai un balletto di 5 secondi senza musica.",
+  "Fai una previsione assurda sulla serata e difendila fino alla fine.",
+  "Dai un soprannome spagnolo a tutti e 4.",
+  "Parla per 1 minuto come un documentarista del branco alpha.",
+  "Fai una foto di gruppo con faccia da boss internazionale.",
+  "Inventati un motto ufficiale del viaggio.",
+  "Manda nel gruppo una frase motivazionale totalmente esagerata.",
+  "Fai partire una mini-coreografia in un posto completamente normale.",
+  "Saluta qualcuno dicendo: buongiorno campione internazionale.",
+  "Fai scegliere a un amico il tuo drink immaginario da Malaga.",
+  "Inventati una leggenda falsa su Malaga e raccontala serio.",
+  "Fai una foto con posa da copertina di album reggaeton.",
+  "Dichiara ufficialmente chi sarà il più pericoloso della serata.",
+  "Fai un brindisi anche con un bicchiere d’acqua.",
+  "Fai una storia mentale come se fossi già in aeroporto.",
+  "Urla piano ma con convinzione: Malaga non è pronta."
+];
+
+const players=["Christian","Fabio","Davide","Peppe"];
+
+function getTodayKey(){
+  const d=new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function getChallengeForPlayer(player){
+  const key=getTodayKey()+player;
+  let hash=0;
+
+  for(let i=0;i<key.length;i++){
+    hash=key.charCodeAt(i)+((hash<<5)-hash);
+  }
+
+  const index=Math.abs(hash)%challenges.length;
+  return challenges[index];
+}
+
+function loadScores(){
+  return JSON.parse(localStorage.getItem("malagaScores")) || {
+    Christian:0,
+    Fabio:0,
+    Davide:0,
+    Peppe:0
+  };
+}
+
+function saveScores(scores){
+  localStorage.setItem("malagaScores",JSON.stringify(scores));
+}
+
+function renderScoreboard(){
+  const scores=loadScores();
+  const board=document.getElementById("scoreboard");
+
+  board.innerHTML="";
+
+  players.forEach(name=>{
+    const div=document.createElement("div");
+    div.className="score";
+    div.innerHTML=`<strong>${name}</strong>${scores[name]} punti`;
+    board.appendChild(div);
+  });
+}
+
+document.getElementById("player").addEventListener("change",function(){
+  const player=this.value;
+
+  if(!player){
+    document.getElementById("challengeText").textContent =
+      "Scegli il tuo nome per ricevere la sfida personale.";
+    return;
+  }
+
+  document.getElementById("challengeText").innerHTML =
+    `<strong>${player}</strong>, la tua sfida di oggi è:<br><br>${getChallengeForPlayer(player)}`;
+});
+
+function completeChallenge(){
+  const player=document.getElementById("player").value;
+
+  if(!player){
+    alert("Prima scegli il tuo nome, alpha.");
+    return;
+  }
+
+  const now=new Date().getTime();
+
+  if(now>targetDate){
+    alert("Tempo scaduto. Ora si paga da bere 🍻");
+    return;
+  }
+
+  const todayDoneKey="done-"+getTodayKey()+"-"+player;
+
+  if(localStorage.getItem(todayDoneKey)){
+    alert("Hai già completato la sfida di oggi. Non fare il furbo 😂");
+    return;
+  }
+
+  const scores=loadScores();
+
+  scores[player]++;
+
+  saveScores(scores);
+
+  localStorage.setItem(todayDoneKey,"true");
+
+  alert("+1 punto per "+player+" 🦁");
+
+  renderScoreboard();
+}
+
+function resetScores(){
+  if(confirm("Vuoi davvero azzerare tutti i punti?")){
+    localStorage.removeItem("malagaScores");
+
+    players.forEach(p=>{
+      localStorage.removeItem("done-"+getTodayKey()+"-"+p);
+    });
+
+    renderScoreboard();
+  }
+}
+
+aggiornaData();
 updateCountdown();
+renderScoreboard();
 
 setInterval(updateCountdown,1000);
-
 </script>
 
 </body>
