@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Malaga Countdown</title>
+<title>Malaga Countdown Alpha</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -17,7 +17,7 @@ body{
 }
 
 .card{
-  max-width:900px;
+  max-width:950px;
   margin:auto;
   padding:35px 25px;
   border-radius:32px;
@@ -36,10 +36,10 @@ body{
   font-size:20px;
 }
 
-h1{font-size:54px;margin-bottom:20px}
+h1{font-size:52px;margin-bottom:20px}
 
 .intro{
-  font-size:23px;
+  font-size:22px;
   line-height:1.5;
   margin-bottom:30px;
 }
@@ -51,7 +51,7 @@ h1{font-size:54px;margin-bottom:20px}
   margin-bottom:35px;
 }
 
-.box,.friend,.score,.game{
+.box,.friend,.score,.game,.voteBox,.historyBox{
   padding:24px 12px;
   border-radius:24px;
   background:rgba(0,0,0,.18);
@@ -95,14 +95,21 @@ h1{font-size:54px;margin-bottom:20px}
 }
 
 .challenge{
-  font-size:24px;
+  font-size:23px;
   line-height:1.5;
   margin:20px 0;
 }
 
-select,input,button{
+.proof{
+  font-size:18px;
+  line-height:1.5;
+  margin:15px 0;
+  opacity:.95;
+}
+
+select,button{
   width:100%;
-  max-width:420px;
+  max-width:430px;
   margin:8px auto;
   padding:15px;
   border-radius:16px;
@@ -111,18 +118,33 @@ select,input,button{
   font-weight:bold;
 }
 
-input{text-align:center}
-
 button{
   background:#ffd166;
   color:#073b4c;
   cursor:pointer;
 }
 
-.reject{
-  background:#ff6b6b;
-  color:white;
+.voteGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:20px;
 }
+
+.voteBox h3{
+  font-size:24px;
+  margin-bottom:10px;
+}
+
+.voteButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.approve{background:#06d6a0;color:#073b4c}
+.reject{background:#ff6b6b;color:white}
+.neutral{background:rgba(255,255,255,.22);color:white}
 
 .score strong{
   font-size:28px;
@@ -130,9 +152,25 @@ button{
 }
 
 .status{
-  margin-top:15px;
+  margin-top:18px;
   font-size:20px;
   line-height:1.5;
+}
+
+.historyBox{
+  margin-top:25px;
+  text-align:left;
+}
+
+.historyBox h2{
+  text-align:center;
+}
+
+.historyItem{
+  padding:12px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  font-size:16px;
+  line-height:1.4;
 }
 
 .mission{
@@ -153,7 +191,7 @@ button{
 }
 
 @media(max-width:650px){
-  h1{font-size:40px}
+  h1{font-size:39px}
   .intro,.challenge{font-size:20px}
   .num{font-size:42px}
 }
@@ -170,8 +208,7 @@ button{
 
   <div class="intro">
     Christian, Davide, Peppe e Fabio.<br>
-    4 alpha in missione, zero sonno e una sola regola:
-    arrivare al 17 giugno con più punti possibile 🌴
+    4 alpha in missione. Sfide giornaliere, prove reali e voti degli altri alpha.
   </div>
 
   <div class="countdown" id="countdown">
@@ -193,7 +230,7 @@ button{
     <h2>🎯 Sfida Alpha del Giorno</h2>
 
     <select id="player">
-      <option value="">Scegli il tuo nome</option>
+      <option value="">Chi sta facendo la sfida?</option>
       <option>Christian</option>
       <option>Fabio</option>
       <option>Davide</option>
@@ -201,32 +238,34 @@ button{
     </select>
 
     <div class="challenge" id="challengeText">
-      Scegli il tuo nome per ricevere la sfida personale.
+      Scegli il partecipante per generare la sua sfida giornaliera.
     </div>
 
-    <input type="text" id="secretCode" placeholder="Codice segreto degli alpha">
+    <div class="proof" id="proofText">
+      La prova richiesta comparirà qui.
+    </div>
 
-    <button onclick="completeChallenge()">
-      Convalida sfida +1 punto 🦁
-    </button>
-
-    <button class="reject" onclick="rejectChallenge()">
-      Gli alpha NON approvano ❌
-    </button>
+    <div class="voteGrid" id="voteGrid"></div>
 
     <div class="status" id="statusText">
-      Per prendere il punto serve approvazione degli alpha e codice segreto.
+      Gli altri 3 alpha votano. Con almeno 2 approvazioni, il partecipante prende +1 punto.
     </div>
 
-    <h2 style="margin-top:25px;">🏆 Classifica Locale</h2>
-
+    <h2 style="margin-top:30px;">🏆 Classifica</h2>
     <div class="scoreboard" id="scoreboard"></div>
+
+    <button class="neutral" onclick="resetScores()">Reset punti e voti</button>
 
     <div class="footer">
       Le sfide valgono fino al 17 giugno alle 23:59:59.<br>
       Chi ha meno punti paga il primo giro a Malaga 🍻
     </div>
 
+  </div>
+
+  <div class="historyBox">
+    <h2>📜 Storico sfide approvate</h2>
+    <div id="historyList"></div>
   </div>
 
   <div class="mission">
@@ -242,16 +281,115 @@ button{
     </p>
   </div>
 
-  <div class="footer">
-    Countdown ufficiale della devastazione controllata ⏳🍻
-  </div>
-
 </div>
 
 <script>
+const players=["Christian","Fabio","Davide","Peppe"];
+
 const mesi=[
   "gennaio","febbraio","marzo","aprile","maggio","giugno",
   "luglio","agosto","settembre","ottobre","novembre","dicembre"
+];
+
+const targetDate=new Date("2026-06-17T23:59:59").getTime();
+
+const challenges=[
+  {
+    text:"Scrivi nel gruppo WhatsApp un titolo ufficiale da alpha per Malaga e fatti rispondere da almeno 2 amici.",
+    proof:"Prova: screenshot del gruppo con almeno 2 risposte degli alpha."
+  },
+  {
+    text:"Crea una mini-playlist da 5 canzoni per Malaga.",
+    proof:"Prova: screenshot della playlist o link mandato nel gruppo."
+  },
+  {
+    text:"Trova un locale, beach club o bar di Malaga dove andare.",
+    proof:"Prova: screenshot o link del posto mandato nel gruppo."
+  },
+  {
+    text:"Trova una frase spagnola utile per rimorchiare o sopravvivere al viaggio.",
+    proof:"Prova: scrivila nel gruppo e fatti votare dagli alpha."
+  },
+  {
+    text:"Prepara una proposta seria per il primo drink ufficiale a Malaga.",
+    proof:"Prova: foto/screenshot del drink o nome scritto nel gruppo."
+  },
+  {
+    text:"Scegli un outfit da serata alpha.",
+    proof:"Prova: foto outfit o screenshot outfit mandato nel gruppo."
+  },
+  {
+    text:"Cerca una spiaggia o zona bella di Malaga dove passare una giornata.",
+    proof:"Prova: screenshot Google Maps o link mandato nel gruppo."
+  },
+  {
+    text:"Inventati il motto ufficiale del viaggio.",
+    proof:"Prova: scrivilo nel gruppo e ottieni almeno 2 approvazioni."
+  },
+  {
+    text:"Trova un ristorante/tapas bar che merita.",
+    proof:"Prova: screenshot o link mandato nel gruppo."
+  },
+  {
+    text:"Fai una previsione verificabile sul viaggio, tipo chi farà più casino o chi dormirà meno.",
+    proof:"Prova: screenshot della previsione mandata nel gruppo."
+  },
+  {
+    text:"Proponi una regola ufficiale del viaggio.",
+    proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."
+  },
+  {
+    text:"Trova una frase trash ufficiale da urlare a Malaga.",
+    proof:"Prova: mandala nel gruppo e ottieni almeno 2 reazioni positive."
+  },
+  {
+    text:"Fai una foto con posa alpha, senza cose pericolose o illegali.",
+    proof:"Prova: foto mandata nel gruppo WhatsApp."
+  },
+  {
+    text:"Trova una cosa gratuita o economica da fare a Malaga.",
+    proof:"Prova: screenshot/link mandato nel gruppo."
+  },
+  {
+    text:"Crea il soprannome spagnolo per un altro alpha.",
+    proof:"Prova: scrivilo nel gruppo e fallo approvare da almeno 2 alpha."
+  },
+  {
+    text:"Trova una frase spagnola per ordinare da bere.",
+    proof:"Prova: screenshot o messaggio nel gruppo con traduzione."
+  },
+  {
+    text:"Prepara una micro-lista di 3 cose da mettere in valigia.",
+    proof:"Prova: lista mandata nel gruppo."
+  },
+  {
+    text:"Trova una canzone ufficiale per l’arrivo a Malaga.",
+    proof:"Prova: link YouTube/Spotify mandato nel gruppo."
+  },
+  {
+    text:"Proponi un piano per la prima sera.",
+    proof:"Prova: piano scritto nel gruppo con orario e posto."
+  },
+  {
+    text:"Manda una dichiarazione alpha di massimo 10 parole.",
+    proof:"Prova: messaggio nel gruppo, screenshot se serve."
+  },
+  {
+    text:"Trova un punto panoramico o posto per foto a Malaga.",
+    proof:"Prova: screenshot o link Maps mandato nel gruppo."
+  },
+  {
+    text:"Proponi una penitenza per chi arriva ultimo in classifica.",
+    proof:"Prova: proposta scritta nel gruppo."
+  },
+  {
+    text:"Scrivi una frase motivazionale assurda per la partenza.",
+    proof:"Prova: messaggio nel gruppo approvato da almeno 2 alpha."
+  },
+  {
+    text:"Trova un piatto tipico da provare a Malaga.",
+    proof:"Prova: screenshot o link mandato nel gruppo."
+  }
 ];
 
 function aggiornaData(){
@@ -259,8 +397,6 @@ function aggiornaData(){
   document.getElementById("todayDate").innerHTML =
     `🌴 Oggi è il ${oggi.getDate()} ${mesi[oggi.getMonth()]} • Sfide fino al 17 giugno`;
 }
-
-const targetDate=new Date("2026-06-17T23:59:59").getTime();
 
 function updateCountdown(){
   const now=new Date().getTime();
@@ -278,46 +414,26 @@ function updateCountdown(){
   document.getElementById("seconds").textContent=Math.floor((diff/1000)%60);
 }
 
-const challenges=[
-  "Invia nel gruppo una foto-prova con posa alpha davanti a uno specchio.",
-  "Invia uno screenshot nel gruppo dove scrivi: Ejaculacion poderosaaaa 😂",
-  "Fai una foto-prova con occhiali da sole e faccia da boss.",
-  "Invia nel gruppo una foto di un brindisi fatto oggi.",
-  "Invia una foto con qualcosa che ricordi Malaga o la Spagna.",
-  "Manda uno screenshot di una playlist spagnola salvata.",
-  "Invia nel gruppo una foto con outfit da alpha approvabile.",
-  "Manda una nota vocale nel gruppo da almeno 5 secondi con motto ufficiale.",
-  "Fai una foto-prova con pollice in su e faccia da vincitore.",
-  "Invia nel gruppo una previsione scritta sulla serata di Malaga.",
-  "Manda una foto di gruppo o selfie con almeno un altro alpha.",
-  "Invia screenshot di una frase motivazionale assurda scritta al gruppo.",
-  "Fai approvare agli alpha un soprannome spagnolo per te.",
-  "Invia foto-prova di un drink, anche analcolico, in modalità Malaga.",
-  "Manda nel gruppo una frase in finto spagnolo e falla approvare.",
-  "Invia una foto con posa da copertina reggaeton.",
-  "Fai scegliere agli alpha il tuo titolo ufficiale per Malaga.",
-  "Invia screenshot di una promessa ufficiale per il viaggio.",
-  "Manda nel gruppo una dichiarazione alpha scritta in massimo 10 parole.",
-  "Invia foto-prova con gesto da capitano della spedizione."
-];
-
-const players=["Christian","Fabio","Davide","Peppe"];
-const validCode="ALPHA2026";
-
 function getTodayKey(){
   const d=new Date();
   return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 }
 
-function getChallengeForPlayer(player){
-  const key=getTodayKey()+player;
+function makeHash(str){
   let hash=0;
-
-  for(let i=0;i<key.length;i++){
-    hash=key.charCodeAt(i)+((hash<<5)-hash);
+  for(let i=0;i<str.length;i++){
+    hash=str.charCodeAt(i)+((hash<<5)-hash);
   }
+  return Math.abs(hash);
+}
 
-  return challenges[Math.abs(hash)%challenges.length];
+function getChallengeForPlayer(player){
+  const key=getTodayKey()+"-"+player;
+  return challenges[makeHash(key)%challenges.length];
+}
+
+function getChallengeId(player){
+  return getTodayKey()+"-"+player;
 }
 
 function loadScores(){
@@ -328,6 +444,22 @@ function loadScores(){
 
 function saveScores(scores){
   localStorage.setItem("malagaScores",JSON.stringify(scores));
+}
+
+function loadVotes(){
+  return JSON.parse(localStorage.getItem("malagaVotes")) || {};
+}
+
+function saveVotes(votes){
+  localStorage.setItem("malagaVotes",JSON.stringify(votes));
+}
+
+function loadHistory(){
+  return JSON.parse(localStorage.getItem("malagaHistory")) || [];
+}
+
+function saveHistory(history){
+  localStorage.setItem("malagaHistory",JSON.stringify(history));
 }
 
 function renderScoreboard(){
@@ -343,27 +475,76 @@ function renderScoreboard(){
   });
 }
 
-document.getElementById("player").addEventListener("change",function(){
-  const player=this.value;
+function renderHistory(){
+  const history=loadHistory();
+  const list=document.getElementById("historyList");
+  list.innerHTML="";
 
-  if(!player){
-    document.getElementById("challengeText").textContent =
-      "Scegli il tuo nome per ricevere la sfida personale.";
+  if(history.length===0){
+    list.innerHTML="<div class='historyItem'>Nessuna sfida ancora approvata.</div>";
     return;
   }
 
-  document.getElementById("challengeText").innerHTML =
-    `<strong>${player}</strong>, la tua sfida verificabile di oggi è:<br><br>${getChallengeForPlayer(player)}`;
+  history.slice().reverse().forEach(item=>{
+    const div=document.createElement("div");
+    div.className="historyItem";
+    div.innerHTML=
+      `<strong>${item.player}</strong> +1<br>
+       ${item.challenge}<br>
+       ✅ Approvato da: ${item.approvedBy.join(", ")}<br>
+       📅 ${item.date}`;
+    list.appendChild(div);
+  });
+}
 
-  document.getElementById("statusText").textContent =
-    "Fai la prova, falla vedere agli alpha e fatti dare il codice segreto.";
-});
+function renderVotes(){
+  const player=document.getElementById("player").value;
+  const voteGrid=document.getElementById("voteGrid");
+  voteGrid.innerHTML="";
 
-function completeChallenge(){
+  if(!player) return;
+
+  const judges=players.filter(p=>p!==player);
+  const votes=loadVotes();
+  const challengeId=getChallengeId(player);
+
+  if(!votes[challengeId]) votes[challengeId]={};
+
+  judges.forEach(judge=>{
+    const currentVote=votes[challengeId][judge] || "none";
+    const box=document.createElement("div");
+    box.className="voteBox";
+
+    box.innerHTML=
+      `<h3>${judge}</h3>
+       <div class="voteButtons">
+        <button class="approve" onclick="voteChallenge('${judge}','yes')">Approva ✅</button>
+        <button class="reject" onclick="voteChallenge('${judge}','no')">Boccia ❌</button>
+       </div>
+       <div style="margin-top:10px;font-size:18px;">
+        Voto attuale: ${
+          currentVote==="yes" ? "✅ approvata" :
+          currentVote==="no" ? "❌ bocciata" :
+          "in attesa"
+        }
+       </div>`;
+
+    voteGrid.appendChild(box);
+  });
+
+  updateVoteStatus();
+}
+
+function voteChallenge(judge,vote){
   const player=document.getElementById("player").value;
 
   if(!player){
-    alert("Prima scegli il tuo nome, alpha.");
+    alert("Prima scegli il partecipante.");
+    return;
+  }
+
+  if(judge===player){
+    alert("Non puoi auto-approvarti, alpha furbo 😂");
     return;
   }
 
@@ -372,58 +553,162 @@ function completeChallenge(){
     return;
   }
 
-  const secret=document.getElementById("secretCode").value.trim();
+  const challengeId=getChallengeId(player);
+  const votes=loadVotes();
 
-  if(secret!==validCode){
-    alert("Codice segreto errato ❌ Gli alpha non hanno ancora approvato.");
+  if(!votes[challengeId]) votes[challengeId]={};
+
+  if(votes[challengeId].finalized){
+    alert("Questa sfida è già stata chiusa.");
     return;
   }
 
-  const todayDoneKey="done-"+getTodayKey()+"-"+player;
+  votes[challengeId][judge]=vote;
+  saveVotes(votes);
 
-  if(localStorage.getItem(todayDoneKey)){
-    alert("Hai già completato la sfida di oggi 😂");
-    return;
-  }
-
-  const scores=loadScores();
-  scores[player]++;
-  saveScores(scores);
-  localStorage.setItem(todayDoneKey,"true");
-
-  document.getElementById("statusText").innerHTML =
-    `✅ Sfida approvata dagli alpha: +1 punto per <strong>${player}</strong> 🦁`;
-
-  document.getElementById("secretCode").value="";
-  renderScoreboard();
+  checkFinalResult(player);
+  renderVotes();
 }
 
-function rejectChallenge(){
+function checkFinalResult(player){
+  const challengeId=getChallengeId(player);
+  const votes=loadVotes();
+  const challengeVotes=votes[challengeId];
+
+  const judges=players.filter(p=>p!==player);
+  const yesVotes=judges.filter(j=>challengeVotes[j]==="yes");
+  const noVotes=judges.filter(j=>challengeVotes[j]==="no");
+
+  if(yesVotes.length>=2){
+    const scores=loadScores();
+
+    const alreadyDoneKey="done-"+challengeId;
+
+    if(!localStorage.getItem(alreadyDoneKey)){
+      scores[player]++;
+      saveScores(scores);
+      localStorage.setItem(alreadyDoneKey,"true");
+
+      challengeVotes.finalized=true;
+      challengeVotes.result="approved";
+      saveVotes(votes);
+
+      const challenge=getChallengeForPlayer(player);
+
+      const history=loadHistory();
+      history.push({
+        player:player,
+        challenge:challenge.text,
+        approvedBy:yesVotes,
+        date:new Date().toLocaleDateString("it-IT")
+      });
+      saveHistory(history);
+
+      document.getElementById("statusText").innerHTML =
+        `✅ Sfida approvata: <strong>${player}</strong> prende +1 punto.<br>
+         Approvato da: ${yesVotes.join(", ")}`;
+    }
+
+    renderScoreboard();
+    renderHistory();
+    return;
+  }
+
+  if(noVotes.length>=2){
+    challengeVotes.finalized=true;
+    challengeVotes.result="rejected";
+    saveVotes(votes);
+
+    document.getElementById("statusText").innerHTML =
+      `❌ Sfida bocciata per <strong>${player}</strong>.<br>
+       Bocciata da: ${noVotes.join(", ")}.<br>
+       Nessun punto assegnato 😂`;
+    return;
+  }
+
+  updateVoteStatus();
+}
+
+function updateVoteStatus(){
   const player=document.getElementById("player").value;
 
-  if(!player){
-    alert("Scegli prima il nome dell'alpha.");
+  if(!player) return;
+
+  const challengeId=getChallengeId(player);
+  const votes=loadVotes();
+  const challengeVotes=votes[challengeId] || {};
+  const judges=players.filter(p=>p!==player);
+
+  const yesVotes=judges.filter(j=>challengeVotes[j]==="yes");
+  const noVotes=judges.filter(j=>challengeVotes[j]==="no");
+  const pending=judges.filter(j=>!challengeVotes[j]);
+
+  if(challengeVotes.finalized && challengeVotes.result==="approved"){
+    document.getElementById("statusText").innerHTML =
+      `✅ Sfida già approvata per <strong>${player}</strong>.<br>
+       Approvata da: ${yesVotes.join(", ")}`;
+    return;
+  }
+
+  if(challengeVotes.finalized && challengeVotes.result==="rejected"){
+    document.getElementById("statusText").innerHTML =
+      `❌ Sfida già bocciata per <strong>${player}</strong>.<br>
+       Bocciata da: ${noVotes.join(", ")}`;
     return;
   }
 
   document.getElementById("statusText").innerHTML =
-    `❌ La prova di <strong>${player}</strong> NON è stata approvata dagli alpha.<br>
-    Motivazione ufficiale: prestazione insufficiente 😂`;
+    `Voti attuali per <strong>${player}</strong>:<br>
+     ✅ ${yesVotes.length} approvazioni • ❌ ${noVotes.length} bocciature • ⏳ ${pending.length} in attesa<br>
+     Servono almeno 2 approvazioni per prendere +1 punto.`;
 }
 
+document.getElementById("player").addEventListener("change",function(){
+  const player=this.value;
+
+  if(!player){
+    document.getElementById("challengeText").textContent =
+      "Scegli il partecipante per generare la sua sfida giornaliera.";
+    document.getElementById("proofText").textContent =
+      "La prova richiesta comparirà qui.";
+    document.getElementById("voteGrid").innerHTML="";
+    return;
+  }
+
+  const challenge=getChallengeForPlayer(player);
+
+  document.getElementById("challengeText").innerHTML =
+    `<strong>${player}</strong>, la tua sfida verificabile di oggi è:<br><br>${challenge.text}`;
+
+  document.getElementById("proofText").innerHTML =
+    `<strong>Prova richiesta:</strong><br>${challenge.proof}`;
+
+  renderVotes();
+});
+
 function resetScores(){
-  if(confirm("Vuoi davvero azzerare tutti i punti?")){
+  if(confirm("Vuoi davvero azzerare punti, voti e storico?")){
     localStorage.removeItem("malagaScores");
-    players.forEach(p=>{
-      localStorage.removeItem("done-"+getTodayKey()+"-"+p);
+    localStorage.removeItem("malagaVotes");
+    localStorage.removeItem("malagaHistory");
+
+    Object.keys(localStorage).forEach(key=>{
+      if(key.startsWith("done-")) localStorage.removeItem(key);
     });
+
     renderScoreboard();
+    renderHistory();
+    renderVotes();
+
+    document.getElementById("statusText").textContent =
+      "Tutto azzerato. Nuovo caos, nuova gloria.";
   }
 }
 
 aggiornaData();
 updateCountdown();
 renderScoreboard();
+renderHistory();
 
 setInterval(updateCountdown,1000);
 </script>
