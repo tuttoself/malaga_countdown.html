@@ -100,7 +100,7 @@ h1{font-size:54px;margin-bottom:20px}
   margin:20px 0;
 }
 
-select,button{
+select,input,button{
   width:100%;
   max-width:420px;
   margin:8px auto;
@@ -111,15 +111,28 @@ select,button{
   font-weight:bold;
 }
 
+input{text-align:center}
+
 button{
   background:#ffd166;
   color:#073b4c;
   cursor:pointer;
 }
 
+.reject{
+  background:#ff6b6b;
+  color:white;
+}
+
 .score strong{
   font-size:28px;
   display:block;
+}
+
+.status{
+  margin-top:15px;
+  font-size:20px;
+  line-height:1.5;
 }
 
 .mission{
@@ -162,51 +175,17 @@ button{
   </div>
 
   <div class="countdown" id="countdown">
-    <div class="box">
-      <div class="num" id="days">0</div>
-      <div class="label">GIORNI</div>
-    </div>
-
-    <div class="box">
-      <div class="num" id="hours">0</div>
-      <div class="label">ORE</div>
-    </div>
-
-    <div class="box">
-      <div class="num" id="minutes">0</div>
-      <div class="label">MINUTI</div>
-    </div>
-
-    <div class="box">
-      <div class="num" id="seconds">0</div>
-      <div class="label">SECONDI</div>
-    </div>
+    <div class="box"><div class="num" id="days">0</div><div class="label">GIORNI</div></div>
+    <div class="box"><div class="num" id="hours">0</div><div class="label">ORE</div></div>
+    <div class="box"><div class="num" id="minutes">0</div><div class="label">MINUTI</div></div>
+    <div class="box"><div class="num" id="seconds">0</div><div class="label">SECONDI</div></div>
   </div>
 
   <div class="friends">
-    <div class="friend">
-      <div class="emoji">🦍</div>
-      <h2>Fabio</h2>
-      <span>Capitano ufficiale della partenza</span>
-    </div>
-
-    <div class="friend">
-      <div class="emoji">🍾</div>
-      <h2>Christian</h2>
-      <span>CEO delle decisioni discutibili</span>
-    </div>
-
-    <div class="friend">
-      <div class="emoji">🕶️</div>
-      <h2>Davide</h2>
-      <span>Predatore delle piste da ballo</span>
-    </div>
-
-    <div class="friend">
-      <div class="emoji">🔥</div>
-      <h2>Peppe</h2>
-      <span>Minaccia ufficiale per gli aperitivi spagnoli</span>
-    </div>
+    <div class="friend"><div class="emoji">🦍</div><h2>Fabio</h2><span>Capitano ufficiale della partenza</span></div>
+    <div class="friend"><div class="emoji">🍾</div><h2>Christian</h2><span>CEO delle decisioni discutibili</span></div>
+    <div class="friend"><div class="emoji">🕶️</div><h2>Davide</h2><span>Predatore delle piste da ballo</span></div>
+    <div class="friend"><div class="emoji">🔥</div><h2>Peppe</h2><span>Minaccia ufficiale per gli aperitivi spagnoli</span></div>
   </div>
 
   <div class="game">
@@ -225,8 +204,19 @@ button{
       Scegli il tuo nome per ricevere la sfida personale.
     </div>
 
-    <button onclick="completeChallenge()">Sfida completata: +1 punto 🦁</button>
-    <button onclick="resetScores()">Reset punti</button>
+    <input type="text" id="secretCode" placeholder="Codice segreto degli alpha">
+
+    <button onclick="completeChallenge()">
+      Convalida sfida +1 punto 🦁
+    </button>
+
+    <button class="reject" onclick="rejectChallenge()">
+      Gli alpha NON approvano ❌
+    </button>
+
+    <div class="status" id="statusText">
+      Per prendere il punto serve approvazione degli alpha e codice segreto.
+    </div>
 
     <h2 style="margin-top:25px;">🏆 Classifica Locale</h2>
 
@@ -266,7 +256,6 @@ const mesi=[
 
 function aggiornaData(){
   const oggi=new Date();
-
   document.getElementById("todayDate").innerHTML =
     `🌴 Oggi è il ${oggi.getDate()} ${mesi[oggi.getMonth()]} • Sfide fino al 17 giugno`;
 }
@@ -283,53 +272,37 @@ function updateCountdown(){
     return;
   }
 
-  document.getElementById("days").textContent =
-    Math.floor(diff/(1000*60*60*24));
-
-  document.getElementById("hours").textContent =
-    Math.floor((diff/(1000*60*60))%24);
-
-  document.getElementById("minutes").textContent =
-    Math.floor((diff/(1000*60))%60);
-
-  document.getElementById("seconds").textContent =
-    Math.floor((diff/1000)%60);
+  document.getElementById("days").textContent=Math.floor(diff/(1000*60*60*24));
+  document.getElementById("hours").textContent=Math.floor((diff/(1000*60*60))%24);
+  document.getElementById("minutes").textContent=Math.floor((diff/(1000*60))%60);
+  document.getElementById("seconds").textContent=Math.floor((diff/1000)%60);
 }
 
 const challenges=[
-  "Fai una camminata da alpha per 10 secondi in pubblico.",
-  "Manda un audio al gruppo dicendo: Ejaculacion poderosaaaa 😂",
-  "Fai ballare qualcuno entro mezzanotte.",
-  "Fai una foto con occhiali da sole anche se non c’è sole.",
-  "Ordina qualcosa pronunciandolo con accento spagnolo scandaloso.",
-  "Fai ridere uno sconosciuto senza spiegare nulla.",
-  "Trova una canzone spagnola e cantala malissimo.",
-  "Fai un brindisi epico come se fossi il re di Malaga.",
-  "Convincete Fabio che il piano era suo anche se non è vero.",
-  "Usa la parola alpha almeno 5 volte nella stessa conversazione.",
-  "Fai una posa da copertina davanti a un posto imbarazzante.",
-  "Fai partire un applauso casuale.",
-  "Dì hola guapa con eleganza, senza sembrare un turista perso.",
-  "Trova il miglior spot per il primo drink ufficiale.",
-  "Fai un balletto di 5 secondi senza musica.",
-  "Fai una previsione assurda sulla serata e difendila fino alla fine.",
-  "Dai un soprannome spagnolo a tutti e 4.",
-  "Parla per 1 minuto come un documentarista del branco alpha.",
-  "Fai una foto di gruppo con faccia da boss internazionale.",
-  "Inventati un motto ufficiale del viaggio.",
-  "Manda nel gruppo una frase motivazionale totalmente esagerata.",
-  "Fai partire una mini-coreografia in un posto completamente normale.",
-  "Saluta qualcuno dicendo: buongiorno campione internazionale.",
-  "Fai scegliere a un amico il tuo drink immaginario da Malaga.",
-  "Inventati una leggenda falsa su Malaga e raccontala serio.",
-  "Fai una foto con posa da copertina di album reggaeton.",
-  "Dichiara ufficialmente chi sarà il più pericoloso della serata.",
-  "Fai un brindisi anche con un bicchiere d’acqua.",
-  "Fai una storia mentale come se fossi già in aeroporto.",
-  "Urla piano ma con convinzione: Malaga non è pronta."
+  "Invia nel gruppo una foto-prova con posa alpha davanti a uno specchio.",
+  "Invia uno screenshot nel gruppo dove scrivi: Ejaculacion poderosaaaa 😂",
+  "Fai una foto-prova con occhiali da sole e faccia da boss.",
+  "Invia nel gruppo una foto di un brindisi fatto oggi.",
+  "Invia una foto con qualcosa che ricordi Malaga o la Spagna.",
+  "Manda uno screenshot di una playlist spagnola salvata.",
+  "Invia nel gruppo una foto con outfit da alpha approvabile.",
+  "Manda una nota vocale nel gruppo da almeno 5 secondi con motto ufficiale.",
+  "Fai una foto-prova con pollice in su e faccia da vincitore.",
+  "Invia nel gruppo una previsione scritta sulla serata di Malaga.",
+  "Manda una foto di gruppo o selfie con almeno un altro alpha.",
+  "Invia screenshot di una frase motivazionale assurda scritta al gruppo.",
+  "Fai approvare agli alpha un soprannome spagnolo per te.",
+  "Invia foto-prova di un drink, anche analcolico, in modalità Malaga.",
+  "Manda nel gruppo una frase in finto spagnolo e falla approvare.",
+  "Invia una foto con posa da copertina reggaeton.",
+  "Fai scegliere agli alpha il tuo titolo ufficiale per Malaga.",
+  "Invia screenshot di una promessa ufficiale per il viaggio.",
+  "Manda nel gruppo una dichiarazione alpha scritta in massimo 10 parole.",
+  "Invia foto-prova con gesto da capitano della spedizione."
 ];
 
 const players=["Christian","Fabio","Davide","Peppe"];
+const validCode="ALPHA2026";
 
 function getTodayKey(){
   const d=new Date();
@@ -344,16 +317,12 @@ function getChallengeForPlayer(player){
     hash=key.charCodeAt(i)+((hash<<5)-hash);
   }
 
-  const index=Math.abs(hash)%challenges.length;
-  return challenges[index];
+  return challenges[Math.abs(hash)%challenges.length];
 }
 
 function loadScores(){
   return JSON.parse(localStorage.getItem("malagaScores")) || {
-    Christian:0,
-    Fabio:0,
-    Davide:0,
-    Peppe:0
+    Christian:0,Fabio:0,Davide:0,Peppe:0
   };
 }
 
@@ -364,7 +333,6 @@ function saveScores(scores){
 function renderScoreboard(){
   const scores=loadScores();
   const board=document.getElementById("scoreboard");
-
   board.innerHTML="";
 
   players.forEach(name=>{
@@ -385,7 +353,10 @@ document.getElementById("player").addEventListener("change",function(){
   }
 
   document.getElementById("challengeText").innerHTML =
-    `<strong>${player}</strong>, la tua sfida di oggi è:<br><br>${getChallengeForPlayer(player)}`;
+    `<strong>${player}</strong>, la tua sfida verificabile di oggi è:<br><br>${getChallengeForPlayer(player)}`;
+
+  document.getElementById("statusText").textContent =
+    "Fai la prova, falla vedere agli alpha e fatti dare il codice segreto.";
 });
 
 function completeChallenge(){
@@ -396,41 +367,56 @@ function completeChallenge(){
     return;
   }
 
-  const now=new Date().getTime();
-
-  if(now>targetDate){
+  if(new Date().getTime()>targetDate){
     alert("Tempo scaduto. Ora si paga da bere 🍻");
+    return;
+  }
+
+  const secret=document.getElementById("secretCode").value.trim();
+
+  if(secret!==validCode){
+    alert("Codice segreto errato ❌ Gli alpha non hanno ancora approvato.");
     return;
   }
 
   const todayDoneKey="done-"+getTodayKey()+"-"+player;
 
   if(localStorage.getItem(todayDoneKey)){
-    alert("Hai già completato la sfida di oggi. Non fare il furbo 😂");
+    alert("Hai già completato la sfida di oggi 😂");
     return;
   }
 
   const scores=loadScores();
-
   scores[player]++;
-
   saveScores(scores);
-
   localStorage.setItem(todayDoneKey,"true");
 
-  alert("+1 punto per "+player+" 🦁");
+  document.getElementById("statusText").innerHTML =
+    `✅ Sfida approvata dagli alpha: +1 punto per <strong>${player}</strong> 🦁`;
 
+  document.getElementById("secretCode").value="";
   renderScoreboard();
+}
+
+function rejectChallenge(){
+  const player=document.getElementById("player").value;
+
+  if(!player){
+    alert("Scegli prima il nome dell'alpha.");
+    return;
+  }
+
+  document.getElementById("statusText").innerHTML =
+    `❌ La prova di <strong>${player}</strong> NON è stata approvata dagli alpha.<br>
+    Motivazione ufficiale: prestazione insufficiente 😂`;
 }
 
 function resetScores(){
   if(confirm("Vuoi davvero azzerare tutti i punti?")){
     localStorage.removeItem("malagaScores");
-
     players.forEach(p=>{
       localStorage.removeItem("done-"+getTodayKey()+"-"+p);
     });
-
     renderScoreboard();
   }
 }
