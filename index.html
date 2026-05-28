@@ -6,7 +6,11 @@
 <title>Malaga Countdown</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   min-height:100vh;
@@ -17,7 +21,7 @@ body{
 }
 
 .card{
-  max-width:850px;
+  max-width:900px;
   margin:auto;
   padding:35px 25px;
   border-radius:32px;
@@ -37,14 +41,14 @@ body{
 }
 
 h1{
-  font-size:54px;
-  line-height:1.05;
+  font-size:56px;
+  line-height:1.1;
   margin-bottom:22px;
 }
 
 .intro{
   font-size:24px;
-  line-height:1.45;
+  line-height:1.5;
   margin-bottom:35px;
 }
 
@@ -56,14 +60,14 @@ h1{
 }
 
 .box{
-  padding:26px 10px;
+  padding:28px 10px;
   border-radius:24px;
   background:rgba(255,255,255,.16);
   border:1px solid rgba(255,255,255,.25);
 }
 
 .num{
-  font-size:54px;
+  font-size:58px;
   font-weight:800;
 }
 
@@ -88,7 +92,7 @@ h1{
 }
 
 .friend .emoji{
-  font-size:34px;
+  font-size:36px;
   margin-bottom:10px;
 }
 
@@ -118,7 +122,7 @@ h1{
 
 .mission p{
   font-size:22px;
-  line-height:1.7;
+  line-height:1.8;
 }
 
 .footer{
@@ -127,48 +131,68 @@ h1{
   opacity:.95;
 }
 
-@media(max-width:600px){
-  h1{font-size:42px}
-  .intro{font-size:21px}
-  .num{font-size:44px}
-  .mission p{font-size:20px}
+@media(max-width:650px){
+
+  h1{
+    font-size:42px;
+  }
+
+  .intro{
+    font-size:20px;
+  }
+
+  .num{
+    font-size:44px;
+  }
+
+  .mission p{
+    font-size:19px;
+  }
+
 }
 </style>
 </head>
 
 <body>
+
 <div class="card">
 
-  <div class="badge">🌴 Oggi è il 27 maggio • Malaga il 18 giugno</div>
+  <div class="badge" id="todayDate"></div>
 
   <h1>Malaga, stiamo arrivando 🍻</h1>
 
   <div class="intro">
     Christian, Davide, Peppe e Fabio.<br>
-    4 alpha in missione, zero paura, zero sonno e una sola regola:
-    tornare con storie leggendarie.
+    4 alpha in missione, zero sonno e una sola regola:
+    tornare con storie leggendarie 🌴
   </div>
 
   <div class="countdown" id="countdown">
+
     <div class="box">
       <div class="num" id="days">0</div>
       <div class="label">GIORNI</div>
     </div>
+
     <div class="box">
       <div class="num" id="hours">0</div>
       <div class="label">ORE</div>
     </div>
+
     <div class="box">
       <div class="num" id="minutes">0</div>
       <div class="label">MINUTI</div>
     </div>
+
     <div class="box">
       <div class="num" id="seconds">0</div>
       <div class="label">SECONDI</div>
     </div>
+
   </div>
 
   <div class="friends">
+
     <div class="friend">
       <div class="emoji">🦍</div>
       <h2>Fabio</h2>
@@ -192,19 +216,23 @@ h1{
       <h2>Peppe</h2>
       <span>Minaccia ufficiale per gli aperitivi spagnoli</span>
     </div>
+
   </div>
 
   <div class="mission">
+
     <h2>🌴 Malaga Mission Alpha 🌴</h2>
+
     <p>
       🍺 Aperitivi senza pietà<br>
-      💃 Ballare come se fosse l’ultima notte<br>
+      💃 Ballare fino alle 5<br>
       🌮 Tapas, mare e caos elegante<br>
       😎 Entrare ovunque come VIP non invitati<br>
       ❤️ Caccia internazionale di ragazze vogliose 😂<br>
       🕺 Distruggere le piste da ballo spagnole<br>
       🦁 Tornare con racconti da leggenda
     </p>
+
   </div>
 
   <div class="footer">
@@ -214,15 +242,33 @@ h1{
 </div>
 
 <script>
+
+const mesi = [
+  "gennaio","febbraio","marzo","aprile",
+  "maggio","giugno","luglio","agosto",
+  "settembre","ottobre","novembre","dicembre"
+];
+
+const oggi = new Date();
+
+const giorno = oggi.getDate();
+const mese = mesi[oggi.getMonth()];
+
+document.getElementById("todayDate").innerHTML =
+`🌴 Oggi è il ${giorno} ${mese} • Malaga il 18 giugno`;
+
 const targetDate = new Date("2026-06-18T00:00:00").getTime();
 
 function updateCountdown(){
+
   const now = new Date().getTime();
   const diff = targetDate - now;
 
   if(diff <= 0){
+
     document.getElementById("countdown").innerHTML =
-      "<h2>Siete a Malaga 🍻🌴</h2>";
+    "<h2>Siete a Malaga 🍻🌴</h2>";
+
     return;
   }
 
@@ -235,10 +281,13 @@ function updateCountdown(){
   document.getElementById("hours").textContent = hours;
   document.getElementById("minutes").textContent = minutes;
   document.getElementById("seconds").textContent = seconds;
+
 }
 
 updateCountdown();
-setInterval(updateCountdown, 1000);
+
+setInterval(updateCountdown,1000);
+
 </script>
 
 </body>
