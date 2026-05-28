@@ -51,7 +51,7 @@ h1{font-size:52px;margin-bottom:20px}
   margin-bottom:35px;
 }
 
-.box,.friend,.score,.game,.voteBox,.historyBox{
+.box,.friend,.score,.game,.historyBox,.dailyBox{
   padding:24px 12px;
   border-radius:24px;
   background:rgba(0,0,0,.18);
@@ -89,7 +89,7 @@ h1{font-size:52px;margin-bottom:20px}
   margin-bottom:30px;
 }
 
-.game h2{
+.game h2,.historyBox h2,.dailyBox h2{
   font-size:34px;
   margin-bottom:15px;
 }
@@ -124,24 +124,6 @@ button{
   cursor:pointer;
 }
 
-.voteGrid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-  margin-top:20px;
-}
-
-.voteBox h3{
-  font-size:24px;
-  margin-bottom:10px;
-}
-
-.voteButtons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
 .approve{background:#06d6a0;color:#073b4c}
 .reject{background:#ff6b6b;color:white}
 .neutral{background:rgba(255,255,255,.22);color:white}
@@ -157,24 +139,24 @@ button{
   line-height:1.5;
 }
 
-.historyBox{
+.historyBox,.dailyBox{
   margin-top:25px;
   text-align:left;
 }
 
-.historyBox h2{
+.historyBox h2,.dailyBox h2{
   text-align:center;
 }
 
-.historyItem{
-  padding:12px;
+.historyItem,.dailyItem{
+  padding:14px;
   border-bottom:1px solid rgba(255,255,255,.2);
   font-size:16px;
-  line-height:1.4;
+  line-height:1.45;
 }
 
 .mission{
-  margin-top:20px;
+  margin-top:25px;
   padding:28px 18px;
   border-radius:28px;
   background:rgba(0,0,0,.18);
@@ -227,10 +209,18 @@ button{
 
   <div class="game">
 
-    <h2>🎯 Sfida Alpha del Giorno</h2>
+    <h2>⚖️ Voto Alpha</h2>
 
-    <select id="player">
-      <option value="">Chi sta facendo la sfida?</option>
+    <select id="judge">
+      <option value="">Io sono il giudice alpha</option>
+      <option>Christian</option>
+      <option>Fabio</option>
+      <option>Davide</option>
+      <option>Peppe</option>
+    </select>
+
+    <select id="challenger">
+      <option value="">Sto votando la sfida di</option>
       <option>Christian</option>
       <option>Fabio</option>
       <option>Davide</option>
@@ -238,23 +228,29 @@ button{
     </select>
 
     <div class="challenge" id="challengeText">
-      Scegli il partecipante per generare la sua sfida giornaliera.
+      Scegli giudice e sfidante per vedere il promemoria della sfida giornaliera.
     </div>
 
     <div class="proof" id="proofText">
       La prova richiesta comparirà qui.
     </div>
 
-    <div class="voteGrid" id="voteGrid"></div>
+    <button class="approve" onclick="voteChallenge('yes')">
+      Approvo la prova ✅
+    </button>
+
+    <button class="reject" onclick="voteChallenge('no')">
+      Boccio la prova ❌
+    </button>
 
     <div class="status" id="statusText">
-      Gli altri 3 alpha votano. Con almeno 2 approvazioni, il partecipante prende +1 punto.
+      Ogni alpha vota. Servono almeno 2 approvazioni per assegnare +1 punto.
     </div>
 
-    <h2 style="margin-top:30px;">🏆 Classifica</h2>
+    <h2 style="margin-top:30px;">🏆 Classifica Attuale</h2>
     <div class="scoreboard" id="scoreboard"></div>
 
-    <button class="neutral" onclick="resetScores()">Reset punti e voti</button>
+    <button class="neutral" onclick="resetScores()">Reset punti, voti e storico</button>
 
     <div class="footer">
       Le sfide valgono fino al 17 giugno alle 23:59:59.<br>
@@ -263,8 +259,13 @@ button{
 
   </div>
 
+  <div class="dailyBox">
+    <h2>📅 Classifica giorno per giorno</h2>
+    <div id="dailyRanking"></div>
+  </div>
+
   <div class="historyBox">
-    <h2>📜 Storico sfide approvate</h2>
+    <h2>📜 Storico voti e sfide</h2>
     <div id="historyList"></div>
   </div>
 
@@ -295,7 +296,7 @@ const targetDate=new Date("2026-06-17T23:59:59").getTime();
 
 const challenges=[
   {
-    text:"Scrivi nel gruppo WhatsApp un titolo ufficiale da alpha per Malaga e fatti rispondere da almeno 2 amici.",
+    text:"Scrivi nel gruppo WhatsApp un titolo ufficiale da alpha per Malaga.",
     proof:"Prova: screenshot del gruppo con almeno 2 risposte degli alpha."
   },
   {
@@ -308,7 +309,7 @@ const challenges=[
   },
   {
     text:"Trova una frase spagnola utile per rimorchiare o sopravvivere al viaggio.",
-    proof:"Prova: scrivila nel gruppo e fatti votare dagli alpha."
+    proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."
   },
   {
     text:"Prepara una proposta seria per il primo drink ufficiale a Malaga.",
@@ -331,7 +332,7 @@ const challenges=[
     proof:"Prova: screenshot o link mandato nel gruppo."
   },
   {
-    text:"Fai una previsione verificabile sul viaggio, tipo chi farà più casino o chi dormirà meno.",
+    text:"Fai una previsione verificabile sul viaggio.",
     proof:"Prova: screenshot della previsione mandata nel gruppo."
   },
   {
@@ -372,7 +373,7 @@ const challenges=[
   },
   {
     text:"Manda una dichiarazione alpha di massimo 10 parole.",
-    proof:"Prova: messaggio nel gruppo, screenshot se serve."
+    proof:"Prova: messaggio nel gruppo."
   },
   {
     text:"Trova un punto panoramico o posto per foto a Malaga.",
@@ -416,7 +417,7 @@ function updateCountdown(){
 
 function getTodayKey(){
   const d=new Date();
-  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
 
 function makeHash(str){
@@ -462,6 +463,14 @@ function saveHistory(history){
   localStorage.setItem("malagaHistory",JSON.stringify(history));
 }
 
+function loadDailyRanking(){
+  return JSON.parse(localStorage.getItem("malagaDailyRanking")) || {};
+}
+
+function saveDailyRanking(data){
+  localStorage.setItem("malagaDailyRanking",JSON.stringify(data));
+}
+
 function renderScoreboard(){
   const scores=loadScores();
   const board=document.getElementById("scoreboard");
@@ -481,7 +490,7 @@ function renderHistory(){
   list.innerHTML="";
 
   if(history.length===0){
-    list.innerHTML="<div class='historyItem'>Nessuna sfida ancora approvata.</div>";
+    list.innerHTML="<div class='historyItem'>Nessun voto ancora registrato.</div>";
     return;
   }
 
@@ -489,62 +498,116 @@ function renderHistory(){
     const div=document.createElement("div");
     div.className="historyItem";
     div.innerHTML=
-      `<strong>${item.player}</strong> +1<br>
-       ${item.challenge}<br>
-       ✅ Approvato da: ${item.approvedBy.join(", ")}<br>
-       📅 ${item.date}`;
+      `<strong>${item.date}</strong><br>
+       Giudice: <strong>${item.judge}</strong><br>
+       Sfidante: <strong>${item.challenger}</strong><br>
+       Sfida: ${item.challenge}<br>
+       Voto: ${item.vote==="yes" ? "✅ Approva" : "❌ Boccia"}<br>
+       Esito: ${item.result}`;
     list.appendChild(div);
   });
 }
 
-function renderVotes(){
-  const player=document.getElementById("player").value;
-  const voteGrid=document.getElementById("voteGrid");
-  voteGrid.innerHTML="";
+function renderDailyRanking(){
+  const daily=loadDailyRanking();
+  const box=document.getElementById("dailyRanking");
+  box.innerHTML="";
 
-  if(!player) return;
+  const dates=Object.keys(daily).sort().reverse();
 
-  const judges=players.filter(p=>p!==player);
-  const votes=loadVotes();
-  const challengeId=getChallengeId(player);
-
-  if(!votes[challengeId]) votes[challengeId]={};
-
-  judges.forEach(judge=>{
-    const currentVote=votes[challengeId][judge] || "none";
-    const box=document.createElement("div");
-    box.className="voteBox";
-
-    box.innerHTML=
-      `<h3>${judge}</h3>
-       <div class="voteButtons">
-        <button class="approve" onclick="voteChallenge('${judge}','yes')">Approva ✅</button>
-        <button class="reject" onclick="voteChallenge('${judge}','no')">Boccia ❌</button>
-       </div>
-       <div style="margin-top:10px;font-size:18px;">
-        Voto attuale: ${
-          currentVote==="yes" ? "✅ approvata" :
-          currentVote==="no" ? "❌ bocciata" :
-          "in attesa"
-        }
-       </div>`;
-
-    voteGrid.appendChild(box);
-  });
-
-  updateVoteStatus();
-}
-
-function voteChallenge(judge,vote){
-  const player=document.getElementById("player").value;
-
-  if(!player){
-    alert("Prima scegli il partecipante.");
+  if(dates.length===0){
+    box.innerHTML="<div class='dailyItem'>Nessuna classifica giornaliera ancora salvata.</div>";
     return;
   }
 
-  if(judge===player){
-    alert("Non puoi auto-approvarti, alpha furbo 😂");
+  dates.forEach(date=>{
+    const scores=daily[date];
+    const div=document.createElement("div");
+    div.className="dailyItem";
+    div.innerHTML=
+      `<strong>${date}</strong><br>
+       Christian: ${scores.Christian} punti<br>
+       Fabio: ${scores.Fabio} punti<br>
+       Davide: ${scores.Davide} punti<br>
+       Peppe: ${scores.Peppe} punti`;
+    box.appendChild(div);
+  });
+}
+
+function saveDailySnapshot(){
+  const daily=loadDailyRanking();
+  daily[getTodayKey()]=loadScores();
+  saveDailyRanking(daily);
+}
+
+function updateChallengePreview(){
+  const judge=document.getElementById("judge").value;
+  const challenger=document.getElementById("challenger").value;
+
+  if(!judge || !challenger){
+    document.getElementById("challengeText").textContent =
+      "Scegli giudice e sfidante per vedere il promemoria della sfida giornaliera.";
+    document.getElementById("proofText").textContent =
+      "La prova richiesta comparirà qui.";
+    document.getElementById("statusText").textContent =
+      "Ogni alpha vota. Servono almeno 2 approvazioni per assegnare +1 punto.";
+    return;
+  }
+
+  if(judge===challenger){
+    document.getElementById("challengeText").innerHTML =
+      "❌ Non puoi votare la tua stessa sfida, alpha furbo 😂";
+    document.getElementById("proofText").textContent = "";
+    return;
+  }
+
+  const challenge=getChallengeForPlayer(challenger);
+  const votes=loadVotes();
+  const challengeId=getChallengeId(challenger);
+  const challengeVotes=votes[challengeId] || {};
+  const currentVote=challengeVotes[judge];
+
+  document.getElementById("challengeText").innerHTML =
+    `<strong>${challenger}</strong> oggi aveva questa sfida:<br><br>${challenge.text}`;
+
+  document.getElementById("proofText").innerHTML =
+    `<strong>Prova richiesta:</strong><br>${challenge.proof}`;
+
+  document.getElementById("statusText").innerHTML =
+    `Giudice selezionato: <strong>${judge}</strong><br>
+     Sfidante: <strong>${challenger}</strong><br>
+     Tuo voto attuale: ${
+      currentVote==="yes" ? "✅ Approva" :
+      currentVote==="no" ? "❌ Boccia" :
+      "non ancora votato"
+     }<br><br>
+     Voti totali: ${getVoteSummary(challenger)}`;
+}
+
+function getVoteSummary(challenger){
+  const votes=loadVotes();
+  const challengeId=getChallengeId(challenger);
+  const challengeVotes=votes[challengeId] || {};
+  const judges=players.filter(p=>p!==challenger);
+
+  const yes=judges.filter(j=>challengeVotes[j]==="yes");
+  const no=judges.filter(j=>challengeVotes[j]==="no");
+  const pending=judges.filter(j=>!challengeVotes[j]);
+
+  return `✅ ${yes.length} approvazioni • ❌ ${no.length} bocciature • ⏳ ${pending.length} in attesa`;
+}
+
+function voteChallenge(vote){
+  const judge=document.getElementById("judge").value;
+  const challenger=document.getElementById("challenger").value;
+
+  if(!judge || !challenger){
+    alert("Seleziona sia il giudice alpha sia lo sfidante.");
+    return;
+  }
+
+  if(judge===challenger){
+    alert("Non puoi votare la tua stessa sfida 😂");
     return;
   }
 
@@ -553,7 +616,7 @@ function voteChallenge(judge,vote){
     return;
   }
 
-  const challengeId=getChallengeId(player);
+  const challengeId=getChallengeId(challenger);
   const votes=loadVotes();
 
   if(!votes[challengeId]) votes[challengeId]={};
@@ -566,51 +629,70 @@ function voteChallenge(judge,vote){
   votes[challengeId][judge]=vote;
   saveVotes(votes);
 
-  checkFinalResult(player);
-  renderVotes();
+  const challenge=getChallengeForPlayer(challenger);
+  const history=loadHistory();
+
+  history.push({
+    date:getTodayKey(),
+    judge:judge,
+    challenger:challenger,
+    challenge:challenge.text,
+    vote:vote,
+    result:"Voto registrato"
+  });
+
+  saveHistory(history);
+
+  checkFinalResult(challenger);
+  updateChallengePreview();
+  renderHistory();
 }
 
-function checkFinalResult(player){
-  const challengeId=getChallengeId(player);
+function checkFinalResult(challenger){
+  const challengeId=getChallengeId(challenger);
   const votes=loadVotes();
   const challengeVotes=votes[challengeId];
+  const judges=players.filter(p=>p!==challenger);
 
-  const judges=players.filter(p=>p!==player);
   const yesVotes=judges.filter(j=>challengeVotes[j]==="yes");
   const noVotes=judges.filter(j=>challengeVotes[j]==="no");
 
   if(yesVotes.length>=2){
-    const scores=loadScores();
-
     const alreadyDoneKey="done-"+challengeId;
 
     if(!localStorage.getItem(alreadyDoneKey)){
-      scores[player]++;
+      const scores=loadScores();
+      scores[challenger]++;
       saveScores(scores);
+
       localStorage.setItem(alreadyDoneKey,"true");
 
       challengeVotes.finalized=true;
       challengeVotes.result="approved";
       saveVotes(votes);
 
-      const challenge=getChallengeForPlayer(player);
-
+      const challenge=getChallengeForPlayer(challenger);
       const history=loadHistory();
+
       history.push({
-        player:player,
+        date:getTodayKey(),
+        judge:yesVotes.join(", "),
+        challenger:challenger,
         challenge:challenge.text,
-        approvedBy:yesVotes,
-        date:new Date().toLocaleDateString("it-IT")
+        vote:"yes",
+        result:"+1 punto assegnato"
       });
+
       saveHistory(history);
+      saveDailySnapshot();
 
       document.getElementById("statusText").innerHTML =
-        `✅ Sfida approvata: <strong>${player}</strong> prende +1 punto.<br>
+        `✅ Sfida approvata: <strong>${challenger}</strong> prende +1 punto.<br>
          Approvato da: ${yesVotes.join(", ")}`;
     }
 
     renderScoreboard();
-    renderHistory();
+    renderDailyRanking();
     return;
   }
 
@@ -619,78 +701,36 @@ function checkFinalResult(player){
     challengeVotes.result="rejected";
     saveVotes(votes);
 
+    const challenge=getChallengeForPlayer(challenger);
+    const history=loadHistory();
+
+    history.push({
+      date:getTodayKey(),
+      judge:noVotes.join(", "),
+      challenger:challenger,
+      challenge:challenge.text,
+      vote:"no",
+      result:"Sfida bocciata, nessun punto"
+    });
+
+    saveHistory(history);
+    saveDailySnapshot();
+
     document.getElementById("statusText").innerHTML =
-      `❌ Sfida bocciata per <strong>${player}</strong>.<br>
-       Bocciata da: ${noVotes.join(", ")}.<br>
-       Nessun punto assegnato 😂`;
-    return;
-  }
-
-  updateVoteStatus();
-}
-
-function updateVoteStatus(){
-  const player=document.getElementById("player").value;
-
-  if(!player) return;
-
-  const challengeId=getChallengeId(player);
-  const votes=loadVotes();
-  const challengeVotes=votes[challengeId] || {};
-  const judges=players.filter(p=>p!==player);
-
-  const yesVotes=judges.filter(j=>challengeVotes[j]==="yes");
-  const noVotes=judges.filter(j=>challengeVotes[j]==="no");
-  const pending=judges.filter(j=>!challengeVotes[j]);
-
-  if(challengeVotes.finalized && challengeVotes.result==="approved"){
-    document.getElementById("statusText").innerHTML =
-      `✅ Sfida già approvata per <strong>${player}</strong>.<br>
-       Approvata da: ${yesVotes.join(", ")}`;
-    return;
-  }
-
-  if(challengeVotes.finalized && challengeVotes.result==="rejected"){
-    document.getElementById("statusText").innerHTML =
-      `❌ Sfida già bocciata per <strong>${player}</strong>.<br>
+      `❌ Sfida bocciata per <strong>${challenger}</strong>.<br>
        Bocciata da: ${noVotes.join(", ")}`;
-    return;
   }
 
-  document.getElementById("statusText").innerHTML =
-    `Voti attuali per <strong>${player}</strong>:<br>
-     ✅ ${yesVotes.length} approvazioni • ❌ ${noVotes.length} bocciature • ⏳ ${pending.length} in attesa<br>
-     Servono almeno 2 approvazioni per prendere +1 punto.`;
+  renderHistory();
+  renderDailyRanking();
 }
-
-document.getElementById("player").addEventListener("change",function(){
-  const player=this.value;
-
-  if(!player){
-    document.getElementById("challengeText").textContent =
-      "Scegli il partecipante per generare la sua sfida giornaliera.";
-    document.getElementById("proofText").textContent =
-      "La prova richiesta comparirà qui.";
-    document.getElementById("voteGrid").innerHTML="";
-    return;
-  }
-
-  const challenge=getChallengeForPlayer(player);
-
-  document.getElementById("challengeText").innerHTML =
-    `<strong>${player}</strong>, la tua sfida verificabile di oggi è:<br><br>${challenge.text}`;
-
-  document.getElementById("proofText").innerHTML =
-    `<strong>Prova richiesta:</strong><br>${challenge.proof}`;
-
-  renderVotes();
-});
 
 function resetScores(){
   if(confirm("Vuoi davvero azzerare punti, voti e storico?")){
     localStorage.removeItem("malagaScores");
     localStorage.removeItem("malagaVotes");
     localStorage.removeItem("malagaHistory");
+    localStorage.removeItem("malagaDailyRanking");
 
     Object.keys(localStorage).forEach(key=>{
       if(key.startsWith("done-")) localStorage.removeItem(key);
@@ -698,17 +738,22 @@ function resetScores(){
 
     renderScoreboard();
     renderHistory();
-    renderVotes();
+    renderDailyRanking();
+    updateChallengePreview();
 
     document.getElementById("statusText").textContent =
       "Tutto azzerato. Nuovo caos, nuova gloria.";
   }
 }
 
+document.getElementById("judge").addEventListener("change",updateChallengePreview);
+document.getElementById("challenger").addEventListener("change",updateChallengePreview);
+
 aggiornaData();
 updateCountdown();
 renderScoreboard();
 renderHistory();
+renderDailyRanking();
 
 setInterval(updateCountdown,1000);
 </script>
