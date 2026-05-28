@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Malaga Countdown Alpha</title>
+<title>Malaga Alpha Quiz</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -32,26 +32,36 @@ body{
   padding:14px 22px;
   border-radius:999px;
   background:rgba(255,255,255,.14);
-  margin-bottom:28px;
+  margin-bottom:25px;
   font-size:20px;
 }
 
-h1{font-size:52px;margin-bottom:20px}
+h1{font-size:50px;margin-bottom:18px}
 
 .intro{
   font-size:22px;
   line-height:1.5;
+  margin-bottom:28px;
+}
+
+.warning{
+  padding:22px;
+  border-radius:24px;
+  background:rgba(255,209,102,.25);
+  border:2px solid #ffd166;
+  font-size:23px;
+  font-weight:bold;
   margin-bottom:30px;
 }
 
-.countdown,.friends,.scoreboard{
+.countdown,.scoreboard{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:16px;
   margin-bottom:35px;
 }
 
-.box,.friend,.score,.section,.historyBox,.dailyBox{
+.box,.score,.quiz,.historyBox{
   padding:24px 12px;
   border-radius:24px;
   background:rgba(0,0,0,.18);
@@ -59,7 +69,7 @@ h1{font-size:52px;margin-bottom:20px}
 }
 
 .num{
-  font-size:54px;
+  font-size:52px;
   font-weight:800;
 }
 
@@ -70,46 +80,19 @@ h1{font-size:52px;margin-bottom:20px}
   font-weight:bold;
 }
 
-.friend .emoji{
-  font-size:36px;
-  margin-bottom:8px;
-}
-
-.friend h2{font-size:28px}
-
-.friend span{
-  display:block;
-  margin-top:8px;
-  font-size:17px;
-  opacity:.85;
-}
-
-.section{
+.quiz{
   margin-top:25px;
   margin-bottom:30px;
 }
 
-.section h2,.historyBox h2,.dailyBox h2{
+.quiz h2,.historyBox h2{
   font-size:34px;
   margin-bottom:15px;
 }
 
-.challenge{
-  font-size:23px;
-  line-height:1.5;
-  margin:20px 0;
-}
-
-.proof{
-  font-size:18px;
-  line-height:1.5;
-  margin:15px 0;
-  opacity:.95;
-}
-
 select,button{
   width:100%;
-  max-width:430px;
+  max-width:440px;
   margin:8px auto;
   padding:15px;
   border-radius:16px;
@@ -124,57 +107,64 @@ button{
   cursor:pointer;
 }
 
-.approve{background:#06d6a0;color:#073b4c}
-.reject{background:#ff6b6b;color:white}
-.neutral{background:rgba(255,255,255,.22);color:white}
-
-.score strong{
-  font-size:28px;
+.answer{
   display:block;
+  background:rgba(255,255,255,.18);
+  color:white;
+  border:1px solid rgba(255,255,255,.3);
+}
+
+.answer:hover{
+  background:rgba(255,255,255,.28);
+}
+
+.question{
+  font-size:24px;
+  line-height:1.5;
+  margin:22px 0;
 }
 
 .status{
-  margin-top:18px;
-  font-size:20px;
+  margin-top:20px;
+  font-size:21px;
   line-height:1.5;
 }
 
-.historyBox,.dailyBox{
+.score strong{
+  display:block;
+  font-size:30px;
+}
+
+.leader{
+  border:2px solid #06d6a0;
+}
+
+.loser{
+  border:2px solid #ff6b6b;
+}
+
+.historyBox{
   margin-top:25px;
   text-align:left;
 }
 
-.historyBox h2,.dailyBox h2{
-  text-align:center;
-}
+.historyBox h2{text-align:center}
 
-.historyItem,.dailyItem{
+.historyItem{
   padding:14px;
   border-bottom:1px solid rgba(255,255,255,.2);
   font-size:16px;
   line-height:1.45;
 }
 
-.mission{
-  margin-top:25px;
-  padding:28px 18px;
-  border-radius:28px;
-  background:rgba(0,0,0,.18);
-}
-
-.mission p{
-  font-size:21px;
-  line-height:1.8;
-}
-
-.footer{
-  margin-top:25px;
-  font-size:18px;
+.reset{
+  background:rgba(255,255,255,.2);
+  color:white;
 }
 
 @media(max-width:650px){
-  h1{font-size:39px}
-  .intro,.challenge{font-size:20px}
+  h1{font-size:38px}
+  .intro,.question{font-size:20px}
   .num{font-size:42px}
 }
 </style>
@@ -186,11 +176,15 @@ button{
 
   <div class="badge" id="todayDate"></div>
 
-  <h1>Malaga, stiamo arrivando 🍻</h1>
+  <h1>Malaga Alpha Quiz 🌴🍻</h1>
 
   <div class="intro">
     Christian, Davide, Peppe e Fabio.<br>
-    4 alpha in missione. Sfide giornaliere, prove reali e voti degli altri alpha.
+    Ogni giorno una domanda trash/spagnola diversa. Una sola risposta. Nessun ripensamento.
+  </div>
+
+  <div class="warning">
+    🚨 CHI AVRÀ MENO PUNTI IL 17 GIUGNO PAGA DA BERE APPENA SBARCATI A MALAGA 🍻
   </div>
 
   <div class="countdown" id="countdown">
@@ -200,110 +194,37 @@ button{
     <div class="box"><div class="num" id="seconds">0</div><div class="label">SECONDI</div></div>
   </div>
 
-  <div class="friends">
-    <div class="friend"><div class="emoji">🦍</div><h2>Fabio</h2><span>Capitano ufficiale della partenza</span></div>
-    <div class="friend"><div class="emoji">🍾</div><h2>Christian</h2><span>CEO delle decisioni discutibili</span></div>
-    <div class="friend"><div class="emoji">🕶️</div><h2>Davide</h2><span>Predatore delle piste da ballo</span></div>
-    <div class="friend"><div class="emoji">🔥</div><h2>Peppe</h2><span>Minaccia ufficiale per gli aperitivi spagnoli</span></div>
-  </div>
+  <div class="quiz">
+    <h2>🎯 Domanda Alpha del Giorno</h2>
 
-  <div class="section">
-    <h2>🎯 Sfida Alpha del Giorno</h2>
-
-    <select id="myPlayer">
-      <option value="">Chi sei?</option>
+    <select id="player">
+      <option value="">Scegli il tuo nome</option>
       <option>Christian</option>
       <option>Fabio</option>
       <option>Davide</option>
       <option>Peppe</option>
     </select>
 
-    <div class="challenge" id="myChallengeText">
-      Scegli il tuo nome per vedere la tua sfida personale di oggi.
+    <div class="question" id="questionText">
+      Scegli il tuo nome per ricevere la domanda di oggi.
     </div>
 
-    <div class="proof" id="myProofText">
-      Qui comparirà la prova richiesta.
-    </div>
-
-    <div class="status">
-      Dopo aver fatto la prova, mandala nel gruppo WhatsApp. Gli altri alpha voteranno nella sezione sotto.
-    </div>
-  </div>
-
-  <div class="section">
-
-    <h2>⚖️ Voto Alpha</h2>
-
-    <select id="judge">
-      <option value="">Io sono il giudice alpha</option>
-      <option>Christian</option>
-      <option>Fabio</option>
-      <option>Davide</option>
-      <option>Peppe</option>
-    </select>
-
-    <select id="challenger">
-      <option value="">Sto votando la sfida di</option>
-      <option>Christian</option>
-      <option>Fabio</option>
-      <option>Davide</option>
-      <option>Peppe</option>
-    </select>
-
-    <div class="challenge" id="challengeText">
-      Scegli giudice e sfidante per vedere il promemoria della sfida giornaliera.
-    </div>
-
-    <div class="proof" id="proofText">
-      La prova richiesta comparirà qui.
-    </div>
-
-    <button class="approve" onclick="voteChallenge('yes')">
-      Approvo la prova ✅
-    </button>
-
-    <button class="reject" onclick="voteChallenge('no')">
-      Boccio la prova ❌
-    </button>
+    <div id="answers"></div>
 
     <div class="status" id="statusText">
-      Ogni alpha vota. Servono almeno 2 approvazioni per assegnare +1 punto.
+      Se rispondi giusto prendi +1 punto. Se sbagli resti a 0 per oggi.
     </div>
-
-    <h2 style="margin-top:30px;">🏆 Classifica Attuale</h2>
-    <div class="scoreboard" id="scoreboard"></div>
-
-    <button class="neutral" onclick="resetScores()">Reset punti, voti e storico</button>
-
-    <div class="footer">
-      Le sfide valgono fino al 17 giugno alle 23:59:59.<br>
-      Chi ha meno punti paga il primo giro a Malaga 🍻
-    </div>
-
   </div>
 
-  <div class="dailyBox">
-    <h2>📅 Classifica giorno per giorno</h2>
-    <div id="dailyRanking"></div>
+  <div class="quiz">
+    <h2>🏆 Classifica Attuale</h2>
+    <div class="scoreboard" id="scoreboard"></div>
+    <button class="reset" onclick="resetGame()">Reset punti e storico</button>
   </div>
 
   <div class="historyBox">
-    <h2>📜 Storico voti e sfide</h2>
+    <h2>📜 Storico Giornaliero</h2>
     <div id="historyList"></div>
-  </div>
-
-  <div class="mission">
-    <h2>🌴 Malaga Mission Alpha 🌴</h2>
-    <p>
-      🍺 Aperitivi senza pietà<br>
-      💃 Ballare fino alle 5<br>
-      🌮 Tapas, mare e caos elegante<br>
-      😎 Entrare ovunque come VIP non invitati<br>
-      😂 Urlare “Ejaculacion poderosaaaa” nel momento più sbagliato<br>
-      🕺 Distruggere le piste da ballo spagnole<br>
-      🦁 Tornare con racconti da leggenda
-    </p>
   </div>
 
 </div>
@@ -318,42 +239,160 @@ const mesi=[
 
 const targetDate=new Date("2026-06-17T23:59:59").getTime();
 
-const challenges=[
-  {text:"Scrivi nel gruppo WhatsApp un titolo ufficiale da alpha per Malaga.",proof:"Prova: screenshot del gruppo con almeno 2 risposte degli alpha."},
-  {text:"Crea una mini-playlist da 5 canzoni per Malaga.",proof:"Prova: screenshot della playlist o link mandato nel gruppo."},
-  {text:"Trova un locale, beach club o bar di Malaga dove andare.",proof:"Prova: screenshot o link del posto mandato nel gruppo."},
-  {text:"Trova una frase spagnola utile per rimorchiare o sopravvivere al viaggio.",proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."},
-  {text:"Prepara una proposta seria per il primo drink ufficiale a Malaga.",proof:"Prova: foto/screenshot del drink o nome scritto nel gruppo."},
-  {text:"Scegli un outfit da serata alpha.",proof:"Prova: foto outfit o screenshot outfit mandato nel gruppo."},
-  {text:"Cerca una spiaggia o zona bella di Malaga dove passare una giornata.",proof:"Prova: screenshot Google Maps o link mandato nel gruppo."},
-  {text:"Inventati il motto ufficiale del viaggio.",proof:"Prova: scrivilo nel gruppo e ottieni almeno 2 approvazioni."},
-  {text:"Trova un ristorante/tapas bar che merita.",proof:"Prova: screenshot o link mandato nel gruppo."},
-  {text:"Fai una previsione verificabile sul viaggio.",proof:"Prova: screenshot della previsione mandata nel gruppo."},
-  {text:"Proponi una regola ufficiale del viaggio.",proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."},
-  {text:"Trova una frase trash ufficiale da urlare a Malaga.",proof:"Prova: mandala nel gruppo e ottieni almeno 2 reazioni positive."},
-  {text:"Fai una foto con posa alpha, senza cose pericolose o illegali.",proof:"Prova: foto mandata nel gruppo WhatsApp."},
-  {text:"Trova una cosa gratuita o economica da fare a Malaga.",proof:"Prova: screenshot/link mandato nel gruppo."},
-  {text:"Crea il soprannome spagnolo per un altro alpha.",proof:"Prova: scrivilo nel gruppo e fallo approvare da almeno 2 alpha."},
-  {text:"Trova una frase spagnola per ordinare da bere.",proof:"Prova: screenshot o messaggio nel gruppo con traduzione."},
-  {text:"Prepara una micro-lista di 3 cose da mettere in valigia.",proof:"Prova: lista mandata nel gruppo."},
-  {text:"Trova una canzone ufficiale per l’arrivo a Malaga.",proof:"Prova: link YouTube/Spotify mandato nel gruppo."},
-  {text:"Proponi un piano per la prima sera.",proof:"Prova: piano scritto nel gruppo con orario e posto."},
-  {text:"Manda una dichiarazione alpha di massimo 10 parole.",proof:"Prova: messaggio nel gruppo."},
-  {text:"Trova un punto panoramico o posto per foto a Malaga.",proof:"Prova: screenshot o link Maps mandato nel gruppo."},
-  {text:"Proponi una penitenza per chi arriva ultimo in classifica.",proof:"Prova: proposta scritta nel gruppo."},
-  {text:"Scrivi una frase motivazionale assurda per la partenza.",proof:"Prova: messaggio nel gruppo approvato da almeno 2 alpha."},
-  {text:"Trova un piatto tipico da provare a Malaga.",proof:"Prova: screenshot o link mandato nel gruppo."}
+const riddles=[
+  {
+    q:"💃 Quando parte il reggaeton, quale parte del corpo inizia a mentire per prima?",
+    a:["La testa","Il bacino","Il gomito"],
+    correct:1
+  },
+  {
+    q:"🍻 In vacanza alpha, cosa significa davvero 'ultimo drink'?",
+    a:["Si va a dormire","Ne arrivano altri 5","Si beve acqua"],
+    correct:1
+  },
+  {
+    q:"🇪🇸 Se dici 'hola guapa' con troppa sicurezza, cosa sei ufficialmente?",
+    a:["Un turista pericoloso","Un professore di spagnolo","Un cameriere"],
+    correct:0
+  },
+  {
+    q:"🔥 Qual è il superpotere che ogni alpha crede di avere dopo 3 drink?",
+    a:["Parlare spagnolo","Volare","Fare contabilità"],
+    correct:0
+  },
+  {
+    q:"🌴 Malaga di giorno è mare. Malaga di notte diventa…",
+    a:["Caos latino","Biblioteca","Riunione aziendale"],
+    correct:0
+  },
+  {
+    q:"💋 Qual è la lingua ufficiale del flirt vacanziero?",
+    a:["Spagnolo rotto","Tedesco tecnico","Excel"],
+    correct:0
+  },
+  {
+    q:"🕺 Se parte una bachata e nessuno sa ballarla, cosa succede?",
+    a:["Tutti fingono sicurezza","Si chiama un notaio","Si spegne la musica"],
+    correct:0
+  },
+  {
+    q:"🍹 Più lo bevi, più pensi che il tuo spagnolo migliori.",
+    a:["Cocktail","Caffè decaffeinato","Acqua minerale"],
+    correct:0
+  },
+  {
+    q:"😂 Qual è la frase proibita che può comparire a caso nella serata?",
+    a:["Ejaculacion poderosaaaa","Buona dichiarazione dei redditi","Passami il dizionario"],
+    correct:0
+  },
+  {
+    q:"😎 Qual è il primo sintomo dell’alpha in aeroporto?",
+    a:["Occhiali da sole inutili","Silenzio assoluto","Voglia di lavorare"],
+    correct:0
+  },
+  {
+    q:"🔥 Se una ragazza spagnola sorride, l’alpha medio pensa subito che…",
+    a:["È amore eterno","Ha solo educazione","Sta vendendo assicurazioni"],
+    correct:0
+  },
+  {
+    q:"🍾 Cosa sparisce per primo in una vacanza tra alpha?",
+    a:["La dignità","Il caricabatterie","Il passaporto"],
+    correct:0
+  },
+  {
+    q:"💃 Quale ballo fa sentire tutti latin lover anche senza talento?",
+    a:["Reggaeton","Valzer viennese","Tip tap fiscale"],
+    correct:0
+  },
+  {
+    q:"🌶️ Se una serata è troppo tranquilla, cosa manca?",
+    a:["Un drink sbagliato","Una riunione Teams","Un tutorial di cucina"],
+    correct:0
+  },
+  {
+    q:"🍻 Chi dice 'stasera tranquilla' di solito è…",
+    a:["Il primo che crolla","Il più affidabile","Il guidatore sobrio"],
+    correct:0
+  },
+  {
+    q:"💋 Qual è l’obiettivo non scritto di ogni serata a Malaga?",
+    a:["Flirtare con stile","Fare la lavatrice","Studiare geografia"],
+    correct:0
+  },
+  {
+    q:"🦁 Cosa deve avere un vero alpha in vacanza?",
+    a:["Fiducia ingiustificata","Manuale d’istruzioni","Paura del karaoke"],
+    correct:0
+  },
+  {
+    q:"🇪🇸 Come si dice 'siamo pericolosi ma educati' in lingua alpha?",
+    a:["Vamos con rispetto","Buongiorno commercialista","Dove si paga l’IMU"],
+    correct:0
+  },
+  {
+    q:"🔥 Dopo mezzanotte, ogni decisione presa dal gruppo è…",
+    a:["Peggiore ma più epica","Perfettamente razionale","Approvata dal comune"],
+    correct:0
+  },
+  {
+    q:"🌴 Se Malaga potesse parlare, cosa direbbe vedendovi arrivare?",
+    a:["Non sono pronta","Benvenuti al museo","Silenzio in biblioteca"],
+    correct:0
+  }
 ];
+
+function getTodayKey(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function hash(str){
+  let h=0;
+  for(let i=0;i<str.length;i++){
+    h=str.charCodeAt(i)+((h<<5)-h);
+  }
+  return Math.abs(h);
+}
+
+function getRiddle(player){
+  return riddles[hash(getTodayKey()+player)%riddles.length];
+}
+
+function loadScores(){
+  return JSON.parse(localStorage.getItem("malagaScores")) || {
+    Christian:0,Fabio:0,Davide:0,Peppe:0
+  };
+}
+
+function saveScores(scores){
+  localStorage.setItem("malagaScores",JSON.stringify(scores));
+}
+
+function loadAnswers(){
+  return JSON.parse(localStorage.getItem("malagaAnswers")) || {};
+}
+
+function saveAnswers(answers){
+  localStorage.setItem("malagaAnswers",JSON.stringify(answers));
+}
+
+function loadHistory(){
+  return JSON.parse(localStorage.getItem("malagaHistory")) || [];
+}
+
+function saveHistory(history){
+  localStorage.setItem("malagaHistory",JSON.stringify(history));
+}
 
 function aggiornaData(){
   const oggi=new Date();
   document.getElementById("todayDate").innerHTML =
-    `🌴 Oggi è il ${oggi.getDate()} ${mesi[oggi.getMonth()]} • Sfide fino al 17 giugno`;
+    `🌴 Oggi è il ${oggi.getDate()} ${mesi[oggi.getMonth()]} • Deadline 17 giugno 23:59`;
 }
 
 function updateCountdown(){
-  const now=new Date().getTime();
-  const diff=targetDate-now;
+  const diff=targetDate-new Date().getTime();
 
   if(diff<=0){
     document.getElementById("countdown").innerHTML =
@@ -367,60 +406,101 @@ function updateCountdown(){
   document.getElementById("seconds").textContent=Math.floor((diff/1000)%60);
 }
 
-function getTodayKey(){
-  const d=new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-}
+function renderQuestion(){
+  const player=document.getElementById("player").value;
+  const qBox=document.getElementById("questionText");
+  const answersBox=document.getElementById("answers");
+  const status=document.getElementById("statusText");
 
-function makeHash(str){
-  let hash=0;
-  for(let i=0;i<str.length;i++){
-    hash=str.charCodeAt(i)+((hash<<5)-hash);
+  answersBox.innerHTML="";
+
+  if(!player){
+    qBox.textContent="Scegli il tuo nome per ricevere la domanda di oggi.";
+    status.textContent="Se rispondi giusto prendi +1 punto. Se sbagli resti a 0 per oggi.";
+    return;
   }
-  return Math.abs(hash);
+
+  const answerKey=getTodayKey()+"-"+player;
+  const answers=loadAnswers();
+  const riddle=getRiddle(player);
+
+  qBox.innerHTML=`<strong>${player}</strong>, la tua domanda di oggi è:<br><br>${riddle.q}`;
+
+  if(answers[answerKey]){
+    status.innerHTML =
+      answers[answerKey].correct
+      ? `✅ Hai già risposto correttamente oggi. +1 punto assegnato.`
+      : `❌ Hai già sbagliato oggi. Nessun punto e non puoi cambiare risposta.`;
+
+    riddle.a.forEach((ans,index)=>{
+      const btn=document.createElement("button");
+      btn.className="answer";
+      btn.disabled=true;
+      btn.textContent=ans;
+      answersBox.appendChild(btn);
+    });
+
+    return;
+  }
+
+  riddle.a.forEach((ans,index)=>{
+    const btn=document.createElement("button");
+    btn.className="answer";
+    btn.textContent=ans;
+    btn.onclick=()=>submitAnswer(player,index);
+    answersBox.appendChild(btn);
+  });
+
+  status.textContent="Scegli con attenzione: dopo la risposta non puoi più cambiarla.";
 }
 
-function getChallengeForPlayer(player){
-  const key=getTodayKey()+"-"+player;
-  return challenges[makeHash(key)%challenges.length];
-}
+function submitAnswer(player,index){
+  const answerKey=getTodayKey()+"-"+player;
+  const answers=loadAnswers();
 
-function getChallengeId(player){
-  return getTodayKey()+"-"+player;
-}
+  if(answers[answerKey]){
+    alert("Hai già risposto oggi. Non puoi cambiare.");
+    return;
+  }
 
-function loadScores(){
-  return JSON.parse(localStorage.getItem("malagaScores")) || {
-    Christian:0,Fabio:0,Davide:0,Peppe:0
+  if(new Date().getTime()>targetDate){
+    alert("Tempo scaduto. Ora si paga da bere 🍻");
+    return;
+  }
+
+  const riddle=getRiddle(player);
+  const correct=index===riddle.correct;
+
+  answers[answerKey]={
+    answer:riddle.a[index],
+    correct:correct,
+    date:getTodayKey()
   };
-}
 
-function saveScores(scores){
-  localStorage.setItem("malagaScores",JSON.stringify(scores));
-}
+  saveAnswers(answers);
 
-function loadVotes(){
-  return JSON.parse(localStorage.getItem("malagaVotes")) || {};
-}
+  const history=loadHistory();
+  history.push({
+    date:getTodayKey(),
+    player:player,
+    question:riddle.q,
+    answer:riddle.a[index],
+    result:correct ? "+1 punto" : "0 punti"
+  });
+  saveHistory(history);
 
-function saveVotes(votes){
-  localStorage.setItem("malagaVotes",JSON.stringify(votes));
-}
+  if(correct){
+    const scores=loadScores();
+    scores[player]++;
+    saveScores(scores);
+    alert("Risposta corretta ✅ +1 punto!");
+  }else{
+    alert("Risposta sbagliata ❌ 0 punti.");
+  }
 
-function loadHistory(){
-  return JSON.parse(localStorage.getItem("malagaHistory")) || [];
-}
-
-function saveHistory(history){
-  localStorage.setItem("malagaHistory",JSON.stringify(history));
-}
-
-function loadDailyRanking(){
-  return JSON.parse(localStorage.getItem("malagaDailyRanking")) || {};
-}
-
-function saveDailyRanking(data){
-  localStorage.setItem("malagaDailyRanking",JSON.stringify(data));
+  renderQuestion();
+  renderScoreboard();
+  renderHistory();
 }
 
 function renderScoreboard(){
@@ -428,9 +508,17 @@ function renderScoreboard(){
   const board=document.getElementById("scoreboard");
   board.innerHTML="";
 
+  const values=players.map(p=>scores[p]);
+  const max=Math.max(...values);
+  const min=Math.min(...values);
+
   players.forEach(name=>{
     const div=document.createElement("div");
     div.className="score";
+
+    if(scores[name]===max && max>0) div.classList.add("leader");
+    if(scores[name]===min) div.classList.add("loser");
+
     div.innerHTML=`<strong>${name}</strong>${scores[name]} punti`;
     board.appendChild(div);
   });
@@ -442,7 +530,7 @@ function renderHistory(){
   list.innerHTML="";
 
   if(history.length===0){
-    list.innerHTML="<div class='historyItem'>Nessun voto ancora registrato.</div>";
+    list.innerHTML="<div class='historyItem'>Nessuna risposta ancora registrata.</div>";
     return;
   }
 
@@ -451,283 +539,31 @@ function renderHistory(){
     div.className="historyItem";
     div.innerHTML=
       `<strong>${item.date}</strong><br>
-       Giudice: <strong>${item.judge}</strong><br>
-       Sfidante: <strong>${item.challenger}</strong><br>
-       Sfida: ${item.challenge}<br>
-       Voto: ${item.vote==="yes" ? "✅ Approva" : "❌ Boccia"}<br>
-       Esito: ${item.result}`;
+       Alpha: <strong>${item.player}</strong><br>
+       Domanda: ${item.question}<br>
+       Risposta data: ${item.answer}<br>
+       Esito: <strong>${item.result}</strong>`;
     list.appendChild(div);
   });
 }
 
-function renderDailyRanking(){
-  const daily=loadDailyRanking();
-  const box=document.getElementById("dailyRanking");
-  box.innerHTML="";
-
-  const dates=Object.keys(daily).sort().reverse();
-
-  if(dates.length===0){
-    box.innerHTML="<div class='dailyItem'>Nessuna classifica giornaliera ancora salvata.</div>";
-    return;
-  }
-
-  dates.forEach(date=>{
-    const scores=daily[date];
-    const div=document.createElement("div");
-    div.className="dailyItem";
-    div.innerHTML=
-      `<strong>${date}</strong><br>
-       Christian: ${scores.Christian} punti<br>
-       Fabio: ${scores.Fabio} punti<br>
-       Davide: ${scores.Davide} punti<br>
-       Peppe: ${scores.Peppe} punti`;
-    box.appendChild(div);
-  });
-}
-
-function saveDailySnapshot(){
-  const daily=loadDailyRanking();
-  daily[getTodayKey()]=loadScores();
-  saveDailyRanking(daily);
-}
-
-function updateMyChallenge(){
-  const player=document.getElementById("myPlayer").value;
-
-  if(!player){
-    document.getElementById("myChallengeText").textContent =
-      "Scegli il tuo nome per vedere la tua sfida personale di oggi.";
-    document.getElementById("myProofText").textContent =
-      "Qui comparirà la prova richiesta.";
-    return;
-  }
-
-  const challenge=getChallengeForPlayer(player);
-
-  document.getElementById("myChallengeText").innerHTML =
-    `<strong>${player}</strong>, la tua sfida personale di oggi è:<br><br>${challenge.text}`;
-
-  document.getElementById("myProofText").innerHTML =
-    `<strong>Prova richiesta:</strong><br>${challenge.proof}`;
-}
-
-function updateChallengePreview(){
-  const judge=document.getElementById("judge").value;
-  const challenger=document.getElementById("challenger").value;
-
-  if(!judge || !challenger){
-    document.getElementById("challengeText").textContent =
-      "Scegli giudice e sfidante per vedere il promemoria della sfida giornaliera.";
-    document.getElementById("proofText").textContent =
-      "La prova richiesta comparirà qui.";
-    document.getElementById("statusText").textContent =
-      "Ogni alpha vota. Servono almeno 2 approvazioni per assegnare +1 punto.";
-    return;
-  }
-
-  if(judge===challenger){
-    document.getElementById("challengeText").innerHTML =
-      "❌ Non puoi votare la tua stessa sfida, alpha furbo 😂";
-    document.getElementById("proofText").textContent = "";
-    return;
-  }
-
-  const challenge=getChallengeForPlayer(challenger);
-  const votes=loadVotes();
-  const challengeId=getChallengeId(challenger);
-  const challengeVotes=votes[challengeId] || {};
-  const currentVote=challengeVotes[judge];
-
-  document.getElementById("challengeText").innerHTML =
-    `<strong>${challenger}</strong> oggi aveva questa sfida:<br><br>${challenge.text}`;
-
-  document.getElementById("proofText").innerHTML =
-    `<strong>Prova richiesta:</strong><br>${challenge.proof}`;
-
-  document.getElementById("statusText").innerHTML =
-    `Giudice selezionato: <strong>${judge}</strong><br>
-     Sfidante: <strong>${challenger}</strong><br>
-     Tuo voto attuale: ${
-      currentVote==="yes" ? "✅ Approva" :
-      currentVote==="no" ? "❌ Boccia" :
-      "non ancora votato"
-     }<br><br>
-     Voti totali: ${getVoteSummary(challenger)}`;
-}
-
-function getVoteSummary(challenger){
-  const votes=loadVotes();
-  const challengeId=getChallengeId(challenger);
-  const challengeVotes=votes[challengeId] || {};
-  const judges=players.filter(p=>p!==challenger);
-
-  const yes=judges.filter(j=>challengeVotes[j]==="yes");
-  const no=judges.filter(j=>challengeVotes[j]==="no");
-  const pending=judges.filter(j=>!challengeVotes[j]);
-
-  return `✅ ${yes.length} approvazioni • ❌ ${no.length} bocciature • ⏳ ${pending.length} in attesa`;
-}
-
-function voteChallenge(vote){
-  const judge=document.getElementById("judge").value;
-  const challenger=document.getElementById("challenger").value;
-
-  if(!judge || !challenger){
-    alert("Seleziona sia il giudice alpha sia lo sfidante.");
-    return;
-  }
-
-  if(judge===challenger){
-    alert("Non puoi votare la tua stessa sfida 😂");
-    return;
-  }
-
-  if(new Date().getTime()>targetDate){
-    alert("Tempo scaduto. Ora si paga da bere 🍻");
-    return;
-  }
-
-  const challengeId=getChallengeId(challenger);
-  const votes=loadVotes();
-
-  if(!votes[challengeId]) votes[challengeId]={};
-
-  if(votes[challengeId].finalized){
-    alert("Questa sfida è già stata chiusa.");
-    return;
-  }
-
-  votes[challengeId][judge]=vote;
-  saveVotes(votes);
-
-  const challenge=getChallengeForPlayer(challenger);
-  const history=loadHistory();
-
-  history.push({
-    date:getTodayKey(),
-    judge:judge,
-    challenger:challenger,
-    challenge:challenge.text,
-    vote:vote,
-    result:"Voto registrato"
-  });
-
-  saveHistory(history);
-
-  checkFinalResult(challenger);
-  updateChallengePreview();
-  renderHistory();
-}
-
-function checkFinalResult(challenger){
-  const challengeId=getChallengeId(challenger);
-  const votes=loadVotes();
-  const challengeVotes=votes[challengeId];
-  const judges=players.filter(p=>p!==challenger);
-
-  const yesVotes=judges.filter(j=>challengeVotes[j]==="yes");
-  const noVotes=judges.filter(j=>challengeVotes[j]==="no");
-
-  if(yesVotes.length>=2){
-    const alreadyDoneKey="done-"+challengeId;
-
-    if(!localStorage.getItem(alreadyDoneKey)){
-      const scores=loadScores();
-      scores[challenger]++;
-      saveScores(scores);
-
-      localStorage.setItem(alreadyDoneKey,"true");
-
-      challengeVotes.finalized=true;
-      challengeVotes.result="approved";
-      saveVotes(votes);
-
-      const challenge=getChallengeForPlayer(challenger);
-      const history=loadHistory();
-
-      history.push({
-        date:getTodayKey(),
-        judge:yesVotes.join(", "),
-        challenger:challenger,
-        challenge:challenge.text,
-        vote:"yes",
-        result:"+1 punto assegnato"
-      });
-
-      saveHistory(history);
-      saveDailySnapshot();
-
-      document.getElementById("statusText").innerHTML =
-        `✅ Sfida approvata: <strong>${challenger}</strong> prende +1 punto.<br>
-         Approvato da: ${yesVotes.join(", ")}`;
-    }
-
-    renderScoreboard();
-    renderDailyRanking();
-    return;
-  }
-
-  if(noVotes.length>=2){
-    challengeVotes.finalized=true;
-    challengeVotes.result="rejected";
-    saveVotes(votes);
-
-    const challenge=getChallengeForPlayer(challenger);
-    const history=loadHistory();
-
-    history.push({
-      date:getTodayKey(),
-      judge:noVotes.join(", "),
-      challenger:challenger,
-      challenge:challenge.text,
-      vote:"no",
-      result:"Sfida bocciata, nessun punto"
-    });
-
-    saveHistory(history);
-    saveDailySnapshot();
-
-    document.getElementById("statusText").innerHTML =
-      `❌ Sfida bocciata per <strong>${challenger}</strong>.<br>
-       Bocciata da: ${noVotes.join(", ")}`;
-  }
-
-  renderHistory();
-  renderDailyRanking();
-}
-
-function resetScores(){
-  if(confirm("Vuoi davvero azzerare punti, voti e storico?")){
+function resetGame(){
+  if(confirm("Vuoi davvero azzerare punti, risposte e storico?")){
     localStorage.removeItem("malagaScores");
-    localStorage.removeItem("malagaVotes");
+    localStorage.removeItem("malagaAnswers");
     localStorage.removeItem("malagaHistory");
-    localStorage.removeItem("malagaDailyRanking");
-
-    Object.keys(localStorage).forEach(key=>{
-      if(key.startsWith("done-")) localStorage.removeItem(key);
-    });
-
+    renderQuestion();
     renderScoreboard();
     renderHistory();
-    renderDailyRanking();
-    updateChallengePreview();
-    updateMyChallenge();
-
-    document.getElementById("statusText").textContent =
-      "Tutto azzerato. Nuovo caos, nuova gloria.";
   }
 }
 
-document.getElementById("myPlayer").addEventListener("change",updateMyChallenge);
-document.getElementById("judge").addEventListener("change",updateChallengePreview);
-document.getElementById("challenger").addEventListener("change",updateChallengePreview);
+document.getElementById("player").addEventListener("change",renderQuestion);
 
 aggiornaData();
 updateCountdown();
 renderScoreboard();
 renderHistory();
-renderDailyRanking();
 
 setInterval(updateCountdown,1000);
 </script>
