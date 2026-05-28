@@ -51,7 +51,7 @@ h1{font-size:52px;margin-bottom:20px}
   margin-bottom:35px;
 }
 
-.box,.friend,.score,.game,.historyBox,.dailyBox{
+.box,.friend,.score,.section,.historyBox,.dailyBox{
   padding:24px 12px;
   border-radius:24px;
   background:rgba(0,0,0,.18);
@@ -84,12 +84,12 @@ h1{font-size:52px;margin-bottom:20px}
   opacity:.85;
 }
 
-.game{
+.section{
   margin-top:25px;
   margin-bottom:30px;
 }
 
-.game h2,.historyBox h2,.dailyBox h2{
+.section h2,.historyBox h2,.dailyBox h2{
   font-size:34px;
   margin-bottom:15px;
 }
@@ -207,7 +207,31 @@ button{
     <div class="friend"><div class="emoji">🔥</div><h2>Peppe</h2><span>Minaccia ufficiale per gli aperitivi spagnoli</span></div>
   </div>
 
-  <div class="game">
+  <div class="section">
+    <h2>🎯 Sfida Alpha del Giorno</h2>
+
+    <select id="myPlayer">
+      <option value="">Chi sei?</option>
+      <option>Christian</option>
+      <option>Fabio</option>
+      <option>Davide</option>
+      <option>Peppe</option>
+    </select>
+
+    <div class="challenge" id="myChallengeText">
+      Scegli il tuo nome per vedere la tua sfida personale di oggi.
+    </div>
+
+    <div class="proof" id="myProofText">
+      Qui comparirà la prova richiesta.
+    </div>
+
+    <div class="status">
+      Dopo aver fatto la prova, mandala nel gruppo WhatsApp. Gli altri alpha voteranno nella sezione sotto.
+    </div>
+  </div>
+
+  <div class="section">
 
     <h2>⚖️ Voto Alpha</h2>
 
@@ -295,102 +319,30 @@ const mesi=[
 const targetDate=new Date("2026-06-17T23:59:59").getTime();
 
 const challenges=[
-  {
-    text:"Scrivi nel gruppo WhatsApp un titolo ufficiale da alpha per Malaga.",
-    proof:"Prova: screenshot del gruppo con almeno 2 risposte degli alpha."
-  },
-  {
-    text:"Crea una mini-playlist da 5 canzoni per Malaga.",
-    proof:"Prova: screenshot della playlist o link mandato nel gruppo."
-  },
-  {
-    text:"Trova un locale, beach club o bar di Malaga dove andare.",
-    proof:"Prova: screenshot o link del posto mandato nel gruppo."
-  },
-  {
-    text:"Trova una frase spagnola utile per rimorchiare o sopravvivere al viaggio.",
-    proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."
-  },
-  {
-    text:"Prepara una proposta seria per il primo drink ufficiale a Malaga.",
-    proof:"Prova: foto/screenshot del drink o nome scritto nel gruppo."
-  },
-  {
-    text:"Scegli un outfit da serata alpha.",
-    proof:"Prova: foto outfit o screenshot outfit mandato nel gruppo."
-  },
-  {
-    text:"Cerca una spiaggia o zona bella di Malaga dove passare una giornata.",
-    proof:"Prova: screenshot Google Maps o link mandato nel gruppo."
-  },
-  {
-    text:"Inventati il motto ufficiale del viaggio.",
-    proof:"Prova: scrivilo nel gruppo e ottieni almeno 2 approvazioni."
-  },
-  {
-    text:"Trova un ristorante/tapas bar che merita.",
-    proof:"Prova: screenshot o link mandato nel gruppo."
-  },
-  {
-    text:"Fai una previsione verificabile sul viaggio.",
-    proof:"Prova: screenshot della previsione mandata nel gruppo."
-  },
-  {
-    text:"Proponi una regola ufficiale del viaggio.",
-    proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."
-  },
-  {
-    text:"Trova una frase trash ufficiale da urlare a Malaga.",
-    proof:"Prova: mandala nel gruppo e ottieni almeno 2 reazioni positive."
-  },
-  {
-    text:"Fai una foto con posa alpha, senza cose pericolose o illegali.",
-    proof:"Prova: foto mandata nel gruppo WhatsApp."
-  },
-  {
-    text:"Trova una cosa gratuita o economica da fare a Malaga.",
-    proof:"Prova: screenshot/link mandato nel gruppo."
-  },
-  {
-    text:"Crea il soprannome spagnolo per un altro alpha.",
-    proof:"Prova: scrivilo nel gruppo e fallo approvare da almeno 2 alpha."
-  },
-  {
-    text:"Trova una frase spagnola per ordinare da bere.",
-    proof:"Prova: screenshot o messaggio nel gruppo con traduzione."
-  },
-  {
-    text:"Prepara una micro-lista di 3 cose da mettere in valigia.",
-    proof:"Prova: lista mandata nel gruppo."
-  },
-  {
-    text:"Trova una canzone ufficiale per l’arrivo a Malaga.",
-    proof:"Prova: link YouTube/Spotify mandato nel gruppo."
-  },
-  {
-    text:"Proponi un piano per la prima sera.",
-    proof:"Prova: piano scritto nel gruppo con orario e posto."
-  },
-  {
-    text:"Manda una dichiarazione alpha di massimo 10 parole.",
-    proof:"Prova: messaggio nel gruppo."
-  },
-  {
-    text:"Trova un punto panoramico o posto per foto a Malaga.",
-    proof:"Prova: screenshot o link Maps mandato nel gruppo."
-  },
-  {
-    text:"Proponi una penitenza per chi arriva ultimo in classifica.",
-    proof:"Prova: proposta scritta nel gruppo."
-  },
-  {
-    text:"Scrivi una frase motivazionale assurda per la partenza.",
-    proof:"Prova: messaggio nel gruppo approvato da almeno 2 alpha."
-  },
-  {
-    text:"Trova un piatto tipico da provare a Malaga.",
-    proof:"Prova: screenshot o link mandato nel gruppo."
-  }
+  {text:"Scrivi nel gruppo WhatsApp un titolo ufficiale da alpha per Malaga.",proof:"Prova: screenshot del gruppo con almeno 2 risposte degli alpha."},
+  {text:"Crea una mini-playlist da 5 canzoni per Malaga.",proof:"Prova: screenshot della playlist o link mandato nel gruppo."},
+  {text:"Trova un locale, beach club o bar di Malaga dove andare.",proof:"Prova: screenshot o link del posto mandato nel gruppo."},
+  {text:"Trova una frase spagnola utile per rimorchiare o sopravvivere al viaggio.",proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."},
+  {text:"Prepara una proposta seria per il primo drink ufficiale a Malaga.",proof:"Prova: foto/screenshot del drink o nome scritto nel gruppo."},
+  {text:"Scegli un outfit da serata alpha.",proof:"Prova: foto outfit o screenshot outfit mandato nel gruppo."},
+  {text:"Cerca una spiaggia o zona bella di Malaga dove passare una giornata.",proof:"Prova: screenshot Google Maps o link mandato nel gruppo."},
+  {text:"Inventati il motto ufficiale del viaggio.",proof:"Prova: scrivilo nel gruppo e ottieni almeno 2 approvazioni."},
+  {text:"Trova un ristorante/tapas bar che merita.",proof:"Prova: screenshot o link mandato nel gruppo."},
+  {text:"Fai una previsione verificabile sul viaggio.",proof:"Prova: screenshot della previsione mandata nel gruppo."},
+  {text:"Proponi una regola ufficiale del viaggio.",proof:"Prova: scrivila nel gruppo e falla votare dagli alpha."},
+  {text:"Trova una frase trash ufficiale da urlare a Malaga.",proof:"Prova: mandala nel gruppo e ottieni almeno 2 reazioni positive."},
+  {text:"Fai una foto con posa alpha, senza cose pericolose o illegali.",proof:"Prova: foto mandata nel gruppo WhatsApp."},
+  {text:"Trova una cosa gratuita o economica da fare a Malaga.",proof:"Prova: screenshot/link mandato nel gruppo."},
+  {text:"Crea il soprannome spagnolo per un altro alpha.",proof:"Prova: scrivilo nel gruppo e fallo approvare da almeno 2 alpha."},
+  {text:"Trova una frase spagnola per ordinare da bere.",proof:"Prova: screenshot o messaggio nel gruppo con traduzione."},
+  {text:"Prepara una micro-lista di 3 cose da mettere in valigia.",proof:"Prova: lista mandata nel gruppo."},
+  {text:"Trova una canzone ufficiale per l’arrivo a Malaga.",proof:"Prova: link YouTube/Spotify mandato nel gruppo."},
+  {text:"Proponi un piano per la prima sera.",proof:"Prova: piano scritto nel gruppo con orario e posto."},
+  {text:"Manda una dichiarazione alpha di massimo 10 parole.",proof:"Prova: messaggio nel gruppo."},
+  {text:"Trova un punto panoramico o posto per foto a Malaga.",proof:"Prova: screenshot o link Maps mandato nel gruppo."},
+  {text:"Proponi una penitenza per chi arriva ultimo in classifica.",proof:"Prova: proposta scritta nel gruppo."},
+  {text:"Scrivi una frase motivazionale assurda per la partenza.",proof:"Prova: messaggio nel gruppo approvato da almeno 2 alpha."},
+  {text:"Trova un piatto tipico da provare a Malaga.",proof:"Prova: screenshot o link mandato nel gruppo."}
 ];
 
 function aggiornaData(){
@@ -538,6 +490,26 @@ function saveDailySnapshot(){
   const daily=loadDailyRanking();
   daily[getTodayKey()]=loadScores();
   saveDailyRanking(daily);
+}
+
+function updateMyChallenge(){
+  const player=document.getElementById("myPlayer").value;
+
+  if(!player){
+    document.getElementById("myChallengeText").textContent =
+      "Scegli il tuo nome per vedere la tua sfida personale di oggi.";
+    document.getElementById("myProofText").textContent =
+      "Qui comparirà la prova richiesta.";
+    return;
+  }
+
+  const challenge=getChallengeForPlayer(player);
+
+  document.getElementById("myChallengeText").innerHTML =
+    `<strong>${player}</strong>, la tua sfida personale di oggi è:<br><br>${challenge.text}`;
+
+  document.getElementById("myProofText").innerHTML =
+    `<strong>Prova richiesta:</strong><br>${challenge.proof}`;
 }
 
 function updateChallengePreview(){
@@ -740,12 +712,14 @@ function resetScores(){
     renderHistory();
     renderDailyRanking();
     updateChallengePreview();
+    updateMyChallenge();
 
     document.getElementById("statusText").textContent =
       "Tutto azzerato. Nuovo caos, nuova gloria.";
   }
 }
 
+document.getElementById("myPlayer").addEventListener("change",updateMyChallenge);
 document.getElementById("judge").addEventListener("change",updateChallengePreview);
 document.getElementById("challenger").addEventListener("change",updateChallengePreview);
 
