@@ -12,160 +12,194 @@ body{
   min-height:100vh;
   font-family:Arial,Helvetica,sans-serif;
   color:white;
-  background:linear-gradient(135deg,#073b4c,#118ab2,#06d6a0);
-  padding:25px;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,209,102,.35),transparent 28%),
+    radial-gradient(circle at 85% 20%,rgba(255,107,107,.28),transparent 28%),
+    linear-gradient(135deg,#073b4c,#118ab2,#06d6a0);
+  padding:12px;
 }
 
 .card{
-  max-width:950px;
-  margin:auto;
-  padding:35px 25px;
-  border-radius:32px;
+  width:100%;
+  max-width:920px;
+  margin:0 auto;
+  padding:24px 14px;
+  border-radius:30px;
   text-align:center;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.25);
-  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 22px 65px rgba(0,0,0,.28);
 }
 
 .badge{
   display:inline-block;
-  padding:14px 22px;
+  padding:13px 18px;
   border-radius:999px;
-  background:rgba(255,255,255,.14);
-  margin-bottom:25px;
-  font-size:20px;
+  background:rgba(255,255,255,.18);
+  margin-bottom:24px;
+  font-size:18px;
+  line-height:1.35;
 }
 
-h1{font-size:50px;margin-bottom:18px}
+h1{
+  font-size:40px;
+  line-height:1.05;
+  margin-bottom:18px;
+}
 
 .intro{
-  font-size:22px;
-  line-height:1.5;
+  font-size:20px;
+  line-height:1.45;
   margin-bottom:28px;
-}
-
-.warning{
-  padding:22px;
-  border-radius:24px;
-  background:rgba(255,209,102,.25);
-  border:2px solid #ffd166;
-  font-size:23px;
-  font-weight:bold;
-  margin-bottom:30px;
 }
 
 .countdown,.scoreboard{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  margin-bottom:35px;
+  gap:14px;
+  margin-bottom:28px;
 }
 
 .box,.score,.quiz,.historyBox{
-  padding:24px 12px;
+  padding:22px 8px;
   border-radius:24px;
   background:rgba(0,0,0,.18);
-  border:1px solid rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.25);
 }
 
 .num{
-  font-size:52px;
-  font-weight:800;
+  font-size:42px;
+  font-weight:900;
 }
 
 .label{
-  margin-top:8px;
-  font-size:15px;
-  letter-spacing:3px;
-  font-weight:bold;
+  margin-top:9px;
+  font-size:13px;
+  letter-spacing:2.5px;
+  font-weight:800;
 }
 
 .quiz{
-  margin-top:25px;
-  margin-bottom:30px;
+  margin-top:22px;
+  margin-bottom:28px;
+  padding:24px 14px;
+  border-radius:28px;
+  background:rgba(0,0,0,.20);
 }
 
 .quiz h2,.historyBox h2{
-  font-size:34px;
-  margin-bottom:15px;
+  font-size:31px;
+  line-height:1.15;
+  margin-bottom:18px;
 }
 
-select,button{
+.warning{
+  padding:18px 14px;
+  border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,209,102,.35),rgba(255,107,107,.30));
+  border:2px solid #ffd166;
+  font-size:20px;
+  font-weight:900;
+  line-height:1.35;
+  margin:18px 0 22px;
+}
+
+select{
   width:100%;
-  max-width:440px;
-  margin:8px auto;
-  padding:15px;
-  border-radius:16px;
+  max-width:430px;
+  margin:8px auto 16px;
+  padding:16px;
+  border-radius:18px;
   border:none;
   font-size:18px;
-  font-weight:bold;
+  font-weight:900;
+  display:block;
+}
+
+.question{
+  font-size:20px;
+  line-height:1.45;
+  margin:20px 0;
+  padding:18px 14px;
+  border-radius:22px;
+  background:rgba(255,255,255,.12);
+}
+
+#answers{
+  display:grid;
+  gap:12px;
+  margin-top:16px;
 }
 
 button{
-  background:#ffd166;
-  color:#073b4c;
+  width:100%;
+  max-width:430px;
+  margin:0 auto;
+  padding:16px 14px;
+  border-radius:18px;
+  border:none;
+  font-size:18px;
+  font-weight:900;
   cursor:pointer;
 }
 
 .answer{
   display:block;
-  background:rgba(255,255,255,.18);
-  color:white;
-  border:1px solid rgba(255,255,255,.3);
+  background:#ffd166;
+  color:#073b4c;
 }
 
-.answer:hover{
-  background:rgba(255,255,255,.28);
-}
-
-.question{
-  font-size:24px;
-  line-height:1.5;
-  margin:22px 0;
-}
+.answer:nth-child(2){background:#06d6a0}
+.answer:nth-child(3){background:#ff6b6b;color:white}
 
 .status{
   margin-top:20px;
-  font-size:21px;
-  line-height:1.5;
+  font-size:20px;
+  line-height:1.45;
+  padding:14px;
+  border-radius:20px;
+  background:rgba(255,255,255,.10);
+}
+
+.score{
+  font-size:18px;
+  border:2px solid rgba(255,255,255,.22);
 }
 
 .score strong{
   display:block;
-  font-size:30px;
+  font-size:25px;
+  line-height:1.1;
 }
 
 .leader{
-  border:2px solid #06d6a0;
+  border-color:#06d6a0;
+  box-shadow:0 0 20px rgba(6,214,160,.35);
 }
 
-.loser{
-  border:2px solid #ff6b6b;
+.loser{border-color:#ff6b6b}
+
+.reset{
+  background:rgba(255,255,255,.22);
+  color:white;
+  margin-top:8px;
 }
 
 .historyBox{
-  margin-top:25px;
+  margin-top:24px;
+  padding:24px 14px;
+  border-radius:28px;
+  background:rgba(0,0,0,.20);
   text-align:left;
 }
 
 .historyBox h2{text-align:center}
 
 .historyItem{
-  padding:14px;
-  border-bottom:1px solid rgba(255,255,255,.2);
+  padding:14px 4px;
+  border-bottom:1px solid rgba(255,255,255,.22);
   font-size:16px;
   line-height:1.45;
-}
-
-.reset{
-  background:rgba(255,255,255,.2);
-  color:white;
-}
-
-@media(max-width:650px){
-  h1{font-size:38px}
-  .intro,.question{font-size:20px}
-  .num{font-size:42px}
 }
 </style>
 </head>
@@ -183,10 +217,6 @@ button{
     Ogni giorno una domanda trash/spagnola diversa. Una sola risposta. Nessun ripensamento.
   </div>
 
-  <div class="warning">
-    🚨 CHI AVRÀ MENO PUNTI IL 17 GIUGNO PAGA DA BERE APPENA SBARCATI A MALAGA 🍻
-  </div>
-
   <div class="countdown" id="countdown">
     <div class="box"><div class="num" id="days">0</div><div class="label">GIORNI</div></div>
     <div class="box"><div class="num" id="hours">0</div><div class="label">ORE</div></div>
@@ -196,6 +226,10 @@ button{
 
   <div class="quiz">
     <h2>🎯 Domanda Alpha del Giorno</h2>
+
+    <div class="warning">
+      🚨 CHI AVRÀ MENO PUNTI IL 17 GIUGNO PAGA DA BERE APPENA SBARCATI A MALAGA 🍻
+    </div>
 
     <select id="player">
       <option value="">Scegli il tuo nome</option>
@@ -240,106 +274,26 @@ const mesi=[
 const targetDate=new Date("2026-06-17T23:59:59").getTime();
 
 const riddles=[
-  {
-    q:"💃 Quando parte il reggaeton, quale parte del corpo inizia a mentire per prima?",
-    a:["La testa","Il bacino","Il gomito"],
-    correct:1
-  },
-  {
-    q:"🍻 In vacanza alpha, cosa significa davvero 'ultimo drink'?",
-    a:["Si va a dormire","Ne arrivano altri 5","Si beve acqua"],
-    correct:1
-  },
-  {
-    q:"🇪🇸 Se dici 'hola guapa' con troppa sicurezza, cosa sei ufficialmente?",
-    a:["Un turista pericoloso","Un professore di spagnolo","Un cameriere"],
-    correct:0
-  },
-  {
-    q:"🔥 Qual è il superpotere che ogni alpha crede di avere dopo 3 drink?",
-    a:["Parlare spagnolo","Volare","Fare contabilità"],
-    correct:0
-  },
-  {
-    q:"🌴 Malaga di giorno è mare. Malaga di notte diventa…",
-    a:["Caos latino","Biblioteca","Riunione aziendale"],
-    correct:0
-  },
-  {
-    q:"💋 Qual è la lingua ufficiale del flirt vacanziero?",
-    a:["Spagnolo rotto","Tedesco tecnico","Excel"],
-    correct:0
-  },
-  {
-    q:"🕺 Se parte una bachata e nessuno sa ballarla, cosa succede?",
-    a:["Tutti fingono sicurezza","Si chiama un notaio","Si spegne la musica"],
-    correct:0
-  },
-  {
-    q:"🍹 Più lo bevi, più pensi che il tuo spagnolo migliori.",
-    a:["Cocktail","Caffè decaffeinato","Acqua minerale"],
-    correct:0
-  },
-  {
-    q:"😂 Qual è la frase proibita che può comparire a caso nella serata?",
-    a:["Ejaculacion poderosaaaa","Buona dichiarazione dei redditi","Passami il dizionario"],
-    correct:0
-  },
-  {
-    q:"😎 Qual è il primo sintomo dell’alpha in aeroporto?",
-    a:["Occhiali da sole inutili","Silenzio assoluto","Voglia di lavorare"],
-    correct:0
-  },
-  {
-    q:"🔥 Se una ragazza spagnola sorride, l’alpha medio pensa subito che…",
-    a:["È amore eterno","Ha solo educazione","Sta vendendo assicurazioni"],
-    correct:0
-  },
-  {
-    q:"🍾 Cosa sparisce per primo in una vacanza tra alpha?",
-    a:["La dignità","Il caricabatterie","Il passaporto"],
-    correct:0
-  },
-  {
-    q:"💃 Quale ballo fa sentire tutti latin lover anche senza talento?",
-    a:["Reggaeton","Valzer viennese","Tip tap fiscale"],
-    correct:0
-  },
-  {
-    q:"🌶️ Se una serata è troppo tranquilla, cosa manca?",
-    a:["Un drink sbagliato","Una riunione Teams","Un tutorial di cucina"],
-    correct:0
-  },
-  {
-    q:"🍻 Chi dice 'stasera tranquilla' di solito è…",
-    a:["Il primo che crolla","Il più affidabile","Il guidatore sobrio"],
-    correct:0
-  },
-  {
-    q:"💋 Qual è l’obiettivo non scritto di ogni serata a Malaga?",
-    a:["Flirtare con stile","Fare la lavatrice","Studiare geografia"],
-    correct:0
-  },
-  {
-    q:"🦁 Cosa deve avere un vero alpha in vacanza?",
-    a:["Fiducia ingiustificata","Manuale d’istruzioni","Paura del karaoke"],
-    correct:0
-  },
-  {
-    q:"🇪🇸 Come si dice 'siamo pericolosi ma educati' in lingua alpha?",
-    a:["Vamos con rispetto","Buongiorno commercialista","Dove si paga l’IMU"],
-    correct:0
-  },
-  {
-    q:"🔥 Dopo mezzanotte, ogni decisione presa dal gruppo è…",
-    a:["Peggiore ma più epica","Perfettamente razionale","Approvata dal comune"],
-    correct:0
-  },
-  {
-    q:"🌴 Se Malaga potesse parlare, cosa direbbe vedendovi arrivare?",
-    a:["Non sono pronta","Benvenuti al museo","Silenzio in biblioteca"],
-    correct:0
-  }
+  {q:"💃 Quando parte il reggaeton, quale parte del corpo inizia a mentire per prima?",a:["La testa","Il bacino","Il gomito"],correct:1},
+  {q:"🍻 In vacanza alpha, cosa significa davvero 'ultimo drink'?",a:["Si va a dormire","Ne arrivano altri 5","Si beve acqua"],correct:1},
+  {q:"🇪🇸 Se dici 'hola guapa' con troppa sicurezza, cosa sei ufficialmente?",a:["Un turista pericoloso","Un professore di spagnolo","Un cameriere"],correct:0},
+  {q:"🔥 Qual è il superpotere che ogni alpha crede di avere dopo 3 drink?",a:["Parlare spagnolo","Volare","Fare contabilità"],correct:0},
+  {q:"🌴 Malaga di giorno è mare. Malaga di notte diventa…",a:["Caos latino","Biblioteca","Riunione aziendale"],correct:0},
+  {q:"💋 Qual è la lingua ufficiale del flirt vacanziero?",a:["Spagnolo rotto","Tedesco tecnico","Excel"],correct:0},
+  {q:"🕺 Se parte una bachata e nessuno sa ballarla, cosa succede?",a:["Tutti fingono sicurezza","Si chiama un notaio","Si spegne la musica"],correct:0},
+  {q:"🍹 Più lo bevi, più pensi che il tuo spagnolo migliori.",a:["Cocktail","Caffè decaffeinato","Acqua minerale"],correct:0},
+  {q:"😂 Qual è la frase proibita che può comparire a caso nella serata?",a:["Ejaculacion poderosaaaa","Buona dichiarazione dei redditi","Passami il dizionario"],correct:0},
+  {q:"😎 Qual è il primo sintomo dell’alpha in aeroporto?",a:["Occhiali da sole inutili","Silenzio assoluto","Voglia di lavorare"],correct:0},
+  {q:"🔥 Se una ragazza spagnola sorride, l’alpha medio pensa subito che…",a:["È amore eterno","Ha solo educazione","Sta vendendo assicurazioni"],correct:0},
+  {q:"🍾 Cosa sparisce per primo in una vacanza tra alpha?",a:["La dignità","Il caricabatterie","Il passaporto"],correct:0},
+  {q:"💃 Quale ballo fa sentire tutti latin lover anche senza talento?",a:["Reggaeton","Valzer viennese","Tip tap fiscale"],correct:0},
+  {q:"🌶️ Se una serata è troppo tranquilla, cosa manca?",a:["Un drink sbagliato","Una riunione Teams","Un tutorial di cucina"],correct:0},
+  {q:"🍻 Chi dice 'stasera tranquilla' di solito è…",a:["Il primo che crolla","Il più affidabile","Il guidatore sobrio"],correct:0},
+  {q:"💋 Qual è l’obiettivo non scritto di ogni serata a Malaga?",a:["Flirtare con stile","Fare la lavatrice","Studiare geografia"],correct:0},
+  {q:"🦁 Cosa deve avere un vero alpha in vacanza?",a:["Fiducia ingiustificata","Manuale d’istruzioni","Paura del karaoke"],correct:0},
+  {q:"🇪🇸 Come si dice 'siamo pericolosi ma educati' in lingua alpha?",a:["Vamos con rispetto","Buongiorno commercialista","Dove si paga l’IMU"],correct:0},
+  {q:"🔥 Dopo mezzanotte, ogni decisione presa dal gruppo è…",a:["Peggiore ma più epica","Perfettamente razionale","Approvata dal comune"],correct:0},
+  {q:"🌴 Se Malaga potesse parlare, cosa direbbe vedendovi arrivare?",a:["Non sono pronta","Benvenuti al museo","Silenzio in biblioteca"],correct:0}
 ];
 
 function getTodayKey(){
@@ -360,9 +314,7 @@ function getRiddle(player){
 }
 
 function loadScores(){
-  return JSON.parse(localStorage.getItem("malagaScores")) || {
-    Christian:0,Fabio:0,Davide:0,Peppe:0
-  };
+  return JSON.parse(localStorage.getItem("malagaScores")) || {Christian:0,Fabio:0,Davide:0,Peppe:0};
 }
 
 function saveScores(scores){
@@ -429,17 +381,16 @@ function renderQuestion(){
   if(answers[answerKey]){
     status.innerHTML =
       answers[answerKey].correct
-      ? `✅ Hai già risposto correttamente oggi. +1 punto assegnato.`
-      : `❌ Hai già sbagliato oggi. Nessun punto e non puoi cambiare risposta.`;
+      ? "✅ Hai già risposto correttamente oggi. +1 punto assegnato."
+      : "❌ Hai già sbagliato oggi. Nessun punto e non puoi cambiare risposta.";
 
-    riddle.a.forEach((ans,index)=>{
+    riddle.a.forEach(ans=>{
       const btn=document.createElement("button");
       btn.className="answer";
       btn.disabled=true;
       btn.textContent=ans;
       answersBox.appendChild(btn);
     });
-
     return;
   }
 
@@ -471,12 +422,7 @@ function submitAnswer(player,index){
   const riddle=getRiddle(player);
   const correct=index===riddle.correct;
 
-  answers[answerKey]={
-    answer:riddle.a[index],
-    correct:correct,
-    date:getTodayKey()
-  };
-
+  answers[answerKey]={answer:riddle.a[index],correct:correct,date:getTodayKey()};
   saveAnswers(answers);
 
   const history=loadHistory();
